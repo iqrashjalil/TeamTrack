@@ -1,4 +1,4 @@
-import { Schema, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -52,6 +52,6 @@ userSchema.methods.generateToken = function () {
   });
 };
 
-const User = Model("User", userSchema);
+const User = model("User", userSchema);
 
 export default User;

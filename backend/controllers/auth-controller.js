@@ -1,4 +1,4 @@
-import catchAsyncError from "../middlewares/catchAsyncError.js";
+import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import User from "../models/user-model.js";
 import sendToken from "../utils/jwtToken.js";
 import { ErrorHandler } from "../utils/error-handler.js";
@@ -41,4 +41,4 @@ const login = catchAsyncError(async (req, res, next) => {
   }
   sendToken(user, 200, res);
 });
-export default register;
+export default { register };
