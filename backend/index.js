@@ -4,6 +4,7 @@ dotenv.config({ path: "./config/config.env" });
 import errorMiddleware from "./middlewares/error-middleware.js";
 import connectDB from "./utils/db.js";
 import userRoutes from "./routes/user-routes.js";
+import projectRoutes from "./routes/project-routes.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", userRoutes);
+app.use("/api/project", projectRoutes);
 
 app.use(errorMiddleware);
 app.listen(Port, () => {
