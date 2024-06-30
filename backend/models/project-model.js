@@ -29,6 +29,12 @@ const projectSchema = new mongoose.Schema({
     enum: ["InProgress", "Completed"],
     default: "InProgress",
   },
+  task: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

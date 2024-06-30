@@ -1,0 +1,12 @@
+import express from "express";
+import { authMiddleware } from "../middlewares/auth-middleware.js";
+import { isProjectManger } from "../middlewares/auth-middleware.js";
+import subtaskController from "../controllers/subtask-controller.js";
+
+const router = express.Router();
+
+router
+  .route("/createsubtask")
+  .post(authMiddleware, isProjectManger, subtaskController.createSubtask);
+
+export default router;

@@ -1,5 +1,6 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import Project from "../models/project-model.js";
+import Task from "../models/task-model.js";
 import { ErrorHandler } from "../utils/error-handler.js";
 
 //* Create project
@@ -74,10 +75,22 @@ const getProject = catchAsyncError(async (req, res, next) => {
     projectDetails: project,
   });
 });
+
+//* Get Tasks by project Name
+const getTasks = catchAsyncError(async (req, res, next) => {
+  const { projectId } = req.params;
+
+  const tasks = await Task.find({ project: projectId })
+    .populate("subtasks")
+    .populate("assignedTo");
+
+  res.status(200).json({ success: true, tasks });
+});
 export default {
   createProject,
   updateProject,
   deleteProject,
   getAllProjects,
   getProject,
+  getTasks,
 };
