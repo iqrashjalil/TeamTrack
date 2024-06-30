@@ -35,4 +35,49 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     .status(200)
     .json({ success: true, message: "Project Updated Successfully" });
 });
-export default { createProject, updateProject };
+
+//* Delete Project
+
+const deleteProject = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+
+  const project = await Project.findByIdAndDelete(id);
+  if (!project) {
+    return next(new ErrorHandler("Project not found", 404));
+  }
+  res
+    .status(200)
+    .json({ success: true, message: "Project Deleted Successfully" });
+});
+
+//* Get All Projects
+
+const getAllProjects = catchAsyncError(async (req, res, next) => {
+  const projects = await Project.find();
+  res.status(200).json({
+    success: true,
+    All_Projects: projects,
+  });
+});
+//* Get Single Project
+
+const getProject = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const project = await Project.findById(id);
+
+  if (!project) {
+    return next(new ErrorHandler("Project not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    projectDetails: project,
+  });
+});
+export default {
+  createProject,
+  updateProject,
+  deleteProject,
+  getAllProjects,
+  getProject,
+};

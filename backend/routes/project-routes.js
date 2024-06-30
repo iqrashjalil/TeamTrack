@@ -14,4 +14,13 @@ router
 router
   .route("/updateproject/:id")
   .put(authMiddleware, isProjectManger, projectController.updateProject);
+router
+  .route("/deleteproject/:id")
+  .delete(authMiddleware, isAdmin, projectController.deleteProject);
+router
+  .route("/getallprojects")
+  .get(authMiddleware, projectController.getAllProjects);
+router
+  .route("/getproject/:id")
+  .get(authMiddleware, projectController.getProject);
 export default router;

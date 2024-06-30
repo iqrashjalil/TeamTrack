@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const projectSchema = new mongoose.Schema({
   projectName: {
     type: String,
-    required: true,
+    required: [true, "Please Enter Project Name"],
   },
   description: {
     type: String,
@@ -16,6 +16,7 @@ const projectSchema = new mongoose.Schema({
   projectManager: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: [true, "Please Select Project Manager"],
   },
   members: [
     {
@@ -23,6 +24,11 @@ const projectSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  projectStatus: {
+    type: String,
+    enum: ["InProgress", "Completed"],
+    default: "InProgress",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
