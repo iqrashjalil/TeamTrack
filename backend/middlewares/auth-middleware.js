@@ -26,3 +26,21 @@ export const authMiddleware = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid token", 401));
   }
 });
+
+export const isAdmin = catchAsyncError(async (req, res, next) => {
+  const { role } = req.user;
+  if (role !== "admin") {
+    return next(new ErrorHandler("You are not allowed to access this", 403));
+  } else {
+    next();
+  }
+});
+
+export const isProjectManger = catchAsyncError(async (req, res, next) => {
+  const { role } = req.user;
+  if (role !== "project_manager" && role !== "admin") {
+    return next(new ErrorHandler("You are not allowed to access this", 403));
+  } else {
+    next();
+  }
+});
