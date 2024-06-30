@@ -1,20 +1,27 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import validator from "validator";
 
 const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
-      unique: true,
+      required: [true, "Please Enter Name"],
+      maxLength: [30, "Name Should be less than 30 characters"],
+      minLength: [3, "Name Should be more than 3 characters"],
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Please Enter Email"],
+      validate: [validator.isEmail, "Please enter valid email"],
       unique: true,
     },
     password: {
       type: String,
       required: true,
+      minLength: [6, "Password should be more then 6 characters"],
+      select: false,
     },
     role: {
       type: String,

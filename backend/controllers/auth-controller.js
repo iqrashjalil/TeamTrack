@@ -41,4 +41,59 @@ const login = catchAsyncError(async (req, res, next) => {
   }
   sendToken(user, 200, res);
 });
-export default { register };
+
+//* Logout User
+
+const logout = catchAsyncError(async (req, res, next) => {
+  res.cookie("token", null, { expires: new Date(0) });
+  res.status(200).json({
+    success: true,
+    message: "User logged out successfully",
+  });
+});
+
+//* Get Profile
+
+const getProfile = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id;
+  const user = await User.findById(id);
+  if (!user) {
+    return next(new ErrorHandler("User Not Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    profile: user,
+  });
+});
+
+//* Delete User
+
+const deleteUser = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id;
+  const user = await User.findByIdAndDelete(id);
+  if (!user) {
+    return next(new ErrorHandler("User Not Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    message: "User Deleted Successfully",
+  });
+});
+
+//* Update User
+
+const updateUser = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id;
+  const updates = req.body;
+  const user = await User.findByIdAndUpdate(id, updates, { new: true });
+  if (!user) {
+    return next(new ErrorHandler("User Not Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    message: "User Updated Successfully",
+    data: user,
+  });
+});
+
+export default { register, login, logout, getProfile, deleteUser, updateUser };
