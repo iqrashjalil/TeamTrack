@@ -59,18 +59,28 @@ const updateTask = catchAsyncError(async (req, res, next) => {
 
 const deleteTask = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const task = await Task.findByIdAndDelete(id);
+
+  const task = await Task.findById(id);
   if (!task) {
     return next(new ErrorHandler("Task Not Found", 400));
   }
+
+  await Task.findByIdAndDelete(id);
+
+  await Project.findByIdAndUpdate(task.project, {
+    $pull: { task: id },
+  });
+
   res.status(200).json({ success: true, message: "Task deleted successfully" });
 });
 
-//* Delete Task
+//* Get Task By Id
 
 const getTaskById = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const task = await Task.findById(id);
+  const task = await Task.findById(id)
+    .populate("assignedTo")
+    .populate("subtasks");
   if (!task) {
     return next(new ErrorHandler("Task Not Found", 400));
   }

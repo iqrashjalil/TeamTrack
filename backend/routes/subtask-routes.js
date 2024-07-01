@@ -9,6 +9,15 @@ router
   .route("/createsubtask")
   .post(authMiddleware, isProjectManger, subtaskController.createSubtask);
 router
+  .route("/updatesubtask/:subtaskId")
+  .put(authMiddleware, isProjectManger, subtaskController.updateSubtask);
+router
+  .route("/deletesubtask/:subtaskId")
+  .delete(authMiddleware, isProjectManger, subtaskController.deleteSubTask);
+router
+  .route("/getsubtask/:subtaskId")
+  .get(authMiddleware, subtaskController.getSubtaskById);
+router
   .route("/getsubtasks/:taskId")
   .get(authMiddleware, subtaskController.getSubTasks);
 
