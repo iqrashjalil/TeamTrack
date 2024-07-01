@@ -23,7 +23,5 @@ router
 router
   .route("/getproject/:id")
   .get(authMiddleware, projectController.getProject);
-router
-  .route("/gettasks/:projectId")
-  .get(authMiddleware, projectController.getTasks);
+
 export default router;

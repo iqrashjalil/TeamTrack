@@ -66,13 +66,25 @@ const deleteTask = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ success: true, message: "Task deleted successfully" });
 });
 
-//* Get sub tasks by task
+//* Delete Task
 
-// const getSubTasks = catchAsyncError(async (req, res, next) => {
-//   const { taskId } = req.params;
+const getTaskById = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const task = await Task.findById(id);
+  if (!task) {
+    return next(new ErrorHandler("Task Not Found", 400));
+  }
+  res.status(200).json({ success: true, Task: task });
+});
 
-//   const subtasks = await Subtask.find({ task: taskId }).populate("assignedTo");
+//* Get Tasks by project Name
+const getTasks = catchAsyncError(async (req, res, next) => {
+  const { projectId } = req.params;
 
-//   res.status(200).json({ success: true, subtasks });
-// });
-export default { createTask, updateTask, deleteTask };
+  const tasks = await Task.find({ project: projectId })
+    .populate("subtasks")
+    .populate("assignedTo");
+
+  res.status(200).json({ success: true, tasks });
+});
+export default { createTask, updateTask, deleteTask, getTasks, getTaskById };

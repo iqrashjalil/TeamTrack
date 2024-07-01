@@ -8,5 +8,15 @@ const router = express.Router();
 router
   .route("/createtask")
   .post(authMiddleware, isProjectManger, taskController.createTask);
+router
+  .route("/updatetask/:id")
+  .put(authMiddleware, isProjectManger, taskController.updateTask);
+router
+  .route("/deletetask/:id")
+  .delete(authMiddleware, isProjectManger, taskController.deleteTask);
+router.route("/gettask/:id").get(authMiddleware, taskController.getTaskById);
+router
+  .route("/gettasks/:projectId")
+  .get(authMiddleware, taskController.getTasks);
 
 export default router;

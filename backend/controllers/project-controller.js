@@ -76,21 +76,10 @@ const getProject = catchAsyncError(async (req, res, next) => {
   });
 });
 
-//* Get Tasks by project Name
-const getTasks = catchAsyncError(async (req, res, next) => {
-  const { projectId } = req.params;
-
-  const tasks = await Task.find({ project: projectId })
-    .populate("subtasks")
-    .populate("assignedTo");
-
-  res.status(200).json({ success: true, tasks });
-});
 export default {
   createProject,
   updateProject,
   deleteProject,
   getAllProjects,
   getProject,
-  getTasks,
 };

@@ -8,5 +8,8 @@ const router = express.Router();
 router
   .route("/createsubtask")
   .post(authMiddleware, isProjectManger, subtaskController.createSubtask);
+router
+  .route("/getsubtasks/:taskId")
+  .get(authMiddleware, subtaskController.getSubTasks);
 
 export default router;

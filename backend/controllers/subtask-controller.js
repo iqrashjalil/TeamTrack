@@ -31,4 +31,13 @@ const createSubtask = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default { createSubtask };
+// * Get sub tasks by task
+
+const getSubTasks = catchAsyncError(async (req, res, next) => {
+  const { taskId } = req.params;
+
+  const subtasks = await Subtask.find({ task: taskId }).populate("assignedTo");
+
+  res.status(200).json({ success: true, subtasks });
+});
+export default { createSubtask, getSubTasks };
