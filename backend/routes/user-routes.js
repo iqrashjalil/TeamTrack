@@ -1,6 +1,10 @@
 import express from "express";
 import authController from "../controllers/auth-controller.js";
-import { authMiddleware } from "../middlewares/auth-middleware.js";
+import {
+  authMiddleware,
+  isAdmin,
+  isProjectManger,
+} from "../middlewares/auth-middleware.js";
 
 const router = express.Router();
 
@@ -10,5 +14,19 @@ router.route("/logout").post(authController.logout);
 router.route("/getprofile/:id").get(authMiddleware, authController.getProfile);
 router.route("/deleteuser/:id").delete(authController.deleteUser);
 router.route("/updateuser/:id").put(authController.updateUser);
-
+router
+  .route("/getusers")
+  .get(authMiddleware, isAdmin, authController.getAllUsers);
+router
+  .route("/getteammembers")
+  .get(authMiddleware, isProjectManger, authController.getTeamMembers);
+router
+  .route("/getprojectmanagers")
+  .get(authMiddleware, isAdmin, authController.getProjectManagers);
+router
+  .route("/assignteammember")
+  .get(authMiddleware, isAdmin, authController.assignTeamMember);
+router
+  .route("/getunassignedteammembers")
+  .get(authMiddleware, isAdmin, authController.getUnassignedTeamMembers);
 export default router;

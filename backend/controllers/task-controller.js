@@ -87,6 +87,23 @@ const getTaskById = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ success: true, Task: task });
 });
 
+//* Get Assigned Tasks
+
+const getAssignedTasks = catchAsyncError(async (req, res, next) => {
+  const userId = req.user.id;
+
+  const tasks = await Task.find({ assignedTo: userId }).populate("subtasks");
+  console.log(tasks);
+  if (!tasks || tasks.length === 0) {
+    return next(new ErrorHandler("No tasks found for this user", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    tasks,
+  });
+});
+
 //* Get Tasks by project Name
 const getTasks = catchAsyncError(async (req, res, next) => {
   const { projectId } = req.params;
@@ -97,4 +114,11 @@ const getTasks = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({ success: true, tasks });
 });
-export default { createTask, updateTask, deleteTask, getTasks, getTaskById };
+export default {
+  createTask,
+  updateTask,
+  deleteTask,
+  getTasks,
+  getTaskById,
+  getAssignedTasks,
+};

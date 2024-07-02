@@ -96,4 +96,138 @@ const updateUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default { register, login, logout, getProfile, deleteUser, updateUser };
+//* Get All Users
+
+const getAllUsers = catchAsyncError(async (req, res, next) => {
+  const users = await User.find();
+  if (!users) {
+    return next(new ErrorHandler("No Users Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    All_Users: users,
+  });
+});
+
+//* Get All Team_Members
+
+const getTeamMembers = catchAsyncError(async (req, res, next) => {
+  const projectManagerId = req.user.id;
+
+  const projectManager = await User.findById(projectManagerId);
+
+  console.log("Project Manager:", projectManager);
+
+  if (!projectManager) {
+    return next(new ErrorHandler("Project Manager not found", 404));
+  }
+
+  console.log("Managed Team Members:", projectManager.managedTeamMembers);
+
+  if (
+    !projectManager.managedTeamMembers ||
+    projectManager.managedTeamMembers.length === 0
+  ) {
+    return next(new ErrorHandler("No Managed Team Members Found", 404));
+  }
+
+  const teamMembers = await User.find({
+    role: "team_member",
+    _id: { $in: projectManager.managedTeamMembers },
+  });
+
+  console.log("Team Members Found:", teamMembers);
+
+  if (!teamMembers || teamMembers.length === 0) {
+    return next(new ErrorHandler("No Team Members Found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    team_members: teamMembers,
+  });
+});
+
+//* Assign Team Members to Project Manager
+
+const assignTeamMember = catchAsyncError(async (req, res, next) => {
+  const { projectManagerId, teamMemberId } = req.body;
+
+  const projectManager = await User.findById(projectManagerId);
+
+  if (!projectManager) {
+    return next(new ErrorHandler("Project Manager not found", 404));
+  }
+
+  const teamMember = await User.findById(teamMemberId);
+
+  if (!teamMember || teamMember.role !== "team_member") {
+    return next(new ErrorHandler("Team Member not found or invalid role", 404));
+  }
+  if (projectManager.managedTeamMembers.includes(teamMember._id)) {
+    return next(
+      new ErrorHandler(
+        "Team Member already assigned to this Project Manager",
+        400
+      )
+    );
+  }
+  projectManager.managedTeamMembers.push(teamMember._id);
+  await projectManager.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Team Member assigned successfully",
+    managedTeamMembers: projectManager.managedTeamMembers,
+  });
+});
+
+//*  fetch unassigned team members
+const getUnassignedTeamMembers = catchAsyncError(async (req, res, next) => {
+  const projectManagers = await User.find({ role: "project_manager" });
+
+  let assignedTeamMembers = [];
+  projectManagers.forEach((pm) => {
+    assignedTeamMembers = assignedTeamMembers.concat(pm.managedTeamMembers);
+  });
+
+  const unassignedTeamMembers = await User.find({
+    role: "team_member",
+    _id: { $nin: assignedTeamMembers },
+  });
+
+  if (!unassignedTeamMembers || unassignedTeamMembers.length === 0) {
+    return next(new ErrorHandler("No unassigned Team Members Found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    team_members: unassignedTeamMembers,
+  });
+});
+
+//* Get All Project_managers
+
+const getProjectManagers = catchAsyncError(async (req, res, next) => {
+  const projectManagers = await User.find({ role: "project_manager" });
+  if (!projectManagers) {
+    return next(new ErrorHandler("No Project Managers Found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    project_managers: projectManagers,
+  });
+});
+export default {
+  register,
+  login,
+  logout,
+  getProfile,
+  deleteUser,
+  updateUser,
+  getAllUsers,
+  getProjectManagers,
+  getTeamMembers,
+  assignTeamMember,
+  getUnassignedTeamMembers,
+};

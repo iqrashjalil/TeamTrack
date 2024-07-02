@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import mongoose from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -28,6 +29,12 @@ const userSchema = new Schema(
       enum: ["admin", "project_manager", "team_member"],
       default: "team_member",
     },
+    managedTeamMembers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     profilePicture: {
       type: String,
     },

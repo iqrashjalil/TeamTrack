@@ -18,5 +18,6 @@ router.route("/gettask/:id").get(authMiddleware, taskController.getTaskById);
 router
   .route("/gettasks/:projectId")
   .get(authMiddleware, taskController.getTasks);
+router.route("/mytasks").get(authMiddleware, taskController.getAssignedTasks);
 
 export default router;
