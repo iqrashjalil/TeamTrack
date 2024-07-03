@@ -5,22 +5,22 @@ import { ErrorHandler } from "../utils/error-handler.js";
 
 //* Register
 const register = catchAsyncError(async (req, res, next) => {
-  const { name, email, password, role, profilePicture } = req.body;
-  const userExist = await User.findOne({ email });
+  const { name, email, password } = req.body;
 
+  // User existence check
+  const userExist = await User.findOne({ email });
   if (userExist) {
     return next(
-      new ErrorHandler(`User wtih email:${email} Already Exist`, 400)
+      new ErrorHandler(`User with email: ${email} Already Exists`, 400)
     );
   }
+
+  // Create user with profilePicture (if uploaded)
   const user = await User.create({
     name,
     email,
     password,
-    role,
-    profilePicture,
   });
-
   res.status(201).json({
     success: true,
     message: "User Registered Successfully",
