@@ -52,6 +52,9 @@ export const login = createAsyncThunk(
         loginData,
         config
       );
+      if (data.success) {
+        localStorage.setItem("isAuthenticated", true);
+      }
       return data;
     } catch (error) {
       const message =
@@ -87,6 +90,9 @@ export const logout = createAsyncThunk("user/logout", async () => {
       {},
       { withCredentials: true }
     );
+    if (data.success) {
+      localStorage.removeItem("isAuthenticated");
+    }
     return data;
   } catch (error) {
     const message = "Unable to log out";
@@ -137,7 +143,7 @@ const userSlice = createSlice({
       })
       .addCase(loadUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(loadUser.rejected, (state, action) => {
