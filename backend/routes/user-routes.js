@@ -5,12 +5,16 @@ import {
   isAdmin,
   isProjectManger,
 } from "../middlewares/auth-middleware.js";
+import { upload } from "../upload.js";
 
 const router = express.Router();
 
-router.route("/register").post(authController.register);
+router
+  .route("/register")
+  .post(upload.single("profilePicture"), authController.register);
 router.route("/login").post(authController.login);
 router.route("/logout").post(authController.logout);
+router.route("/getuser").get(authMiddleware, authController.getUser);
 router.route("/getprofile/:id").get(authMiddleware, authController.getProfile);
 router.route("/deleteuser/:id").delete(authController.deleteUser);
 router.route("/updateuser/:id").put(authController.updateUser);

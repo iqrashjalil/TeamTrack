@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../images/logo.png";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store/slices/UserSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.users
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("email", e.target.email.value);
+    formData.append("password", e.target.password.value);
+
+    dispatch(login(formData));
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error, toast]);
   return (
     <>
       <section className="p-2 flex justify-center items-center h-screen">
@@ -13,7 +36,7 @@ const Login = () => {
               Login To TeamTrack!
             </h1>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col m-2 ">
               <label htmlFor="email">Email</label>
               <input

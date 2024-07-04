@@ -2,10 +2,21 @@ import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import User from "../models/user-model.js";
 import sendToken from "../utils/jwtToken.js";
 import { ErrorHandler } from "../utils/error-handler.js";
+import fs from "fs";
+import cloudinary from "cloudinary";
+// import cloudinary from "../cloudinary.config.js";
+import dotenv from "dotenv";
+dotenv.config({ path: "../config/config.env" });
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 //* Register
 const register = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
+  const profilePicture = req.file;
 
   // User existence check
   const userExist = await User.findOne({ email });
@@ -15,16 +26,30 @@ const register = catchAsyncError(async (req, res, next) => {
     );
   }
 
+  let uploadPP;
+  try {
+    // Check if profilePicture is provided and upload it to Cloudinary
+    if (profilePicture) {
+      uploadPP = await cloudinary.v2.uploader.upload(profilePicture.path, {
+        folder: "profile_pictures", // Optional: specify a folder in Cloudinary
+      });
+    }
+  } catch (error) {
+    return next(new ErrorHandler("Profile picture upload failed", 500));
+  }
+
   // Create user with profilePicture (if uploaded)
   const user = await User.create({
     name,
     email,
     password,
+    profilePicture: uploadPP ? uploadPP.secure_url : undefined,
   });
+  fs.unlinkSync(req.file.path);
   res.status(201).json({
     success: true,
     message: "User Registered Successfully",
-    data: user,
+    user: user,
   });
 });
 
@@ -45,11 +70,23 @@ const login = catchAsyncError(async (req, res, next) => {
 //* Logout User
 
 const logout = catchAsyncError(async (req, res, next) => {
-  res.cookie("token", null, { expires: new Date(0) });
+  res.clearCookie("token");
   res.status(200).json({
     success: true,
     message: "User logged out successfully",
   });
+});
+
+//* Get User
+
+const getUser = catchAsyncError(async (req, res, next) => {
+  console.log(req.user.id);
+  const userid = req.user.id;
+  const user = await User.findById(userid);
+  if (!user) {
+    return next(new ErrorHandler("User Not Found", 404));
+  }
+  res.status(200).json(user);
 });
 
 //* Get Profile
@@ -92,7 +129,7 @@ const updateUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User Updated Successfully",
-    data: user,
+    user: user,
   });
 });
 
@@ -230,4 +267,5 @@ export default {
   getTeamMembers,
   assignTeamMember,
   getUnassignedTeamMembers,
+  getUser,
 };
