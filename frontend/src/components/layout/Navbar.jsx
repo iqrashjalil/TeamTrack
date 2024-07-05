@@ -20,6 +20,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    setIsDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
@@ -27,9 +28,9 @@ const Navbar = () => {
   };
   return (
     <>
-      <header className="flex justify-between items-center bg-white h-14 px-4">
+      <header className="flex justify-between items-center bg-white h-12 px-4">
         <div className="flex-shrink-0 flex-grow-0">
-          <img className="w-12" src={logo} alt="" />
+          <img className="w-8" src={logo} alt="" />
         </div>
         <div className="flex justify-center gap-2">
           <div
@@ -46,12 +47,18 @@ const Navbar = () => {
           {isDropdownOpen ? (
             <div className="absolute top-14 bg-white p-1 right-20 md:right-8 rounded">
               <ul>
-                <li className="flex items-center gap-2 p-2 m-1 rounded transition-all hover:text-purple-500 duration-200 hover:bg-slate-100">
+                <li
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-2 p-2 m-1 rounded transition-all hover:text-purple-500 duration-200 hover:bg-slate-100"
+                >
                   <IoPersonSharp />
                   <NavLink className="text-slate-500">Edit Profile</NavLink>
                 </li>
                 <hr />
-                <li className="flex items-center gap-2 p-2 m-1 rounded hover:text-purple-500 hover:bg-slate-100">
+                <li
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 p-2 m-1 rounded hover:text-purple-500 hover:bg-slate-100"
+                >
                   <IoMdExit />
                   <NavLink className="text-slate-500">Logout</NavLink>
                 </li>
@@ -69,7 +76,7 @@ const Navbar = () => {
         </div>
         {isNavbarOpen ? (
           <>
-            <nav className="w-full absolute top-14 left-0 h-screen bg-white md:block">
+            <nav className="w-full absolute top-12 left-0 h-screen bg-white md:block">
               <ul className="flex flex-col justify-center items-center h-full gap-10">
                 <li>
                   <NavLink

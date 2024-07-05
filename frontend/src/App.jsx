@@ -8,6 +8,7 @@ import Home from "./pages/Home.jsx";
 import AllTasks from "./pages/AllTasks.jsx";
 import { useDispatch } from "react-redux";
 import { loadUser } from "./store/slices/UserSlice.jsx";
+import Footer from "./components/layout/Footer.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/alltasks" element={<AllTasks />} />
         </Routes>
+        <Footer />
       </Router>
     </>
   );
