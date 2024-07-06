@@ -7,6 +7,7 @@ const projectSchema = new mongoose.Schema({
   },
   description: {
     type: String,
+    required: [true, "Please Enter Project Description"],
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

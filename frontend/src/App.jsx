@@ -9,6 +9,7 @@ import AllTasks from "./pages/AllTasks.jsx";
 import { useDispatch } from "react-redux";
 import { loadUser } from "./store/slices/UserSlice.jsx";
 import Footer from "./components/layout/Footer.jsx";
+import Create_Project from "./pages/Admin/Create_Project.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,10 +21,11 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route path="/allprojects" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
           <Route path="/alltasks" element={<AllTasks />} />
+          <Route path="/createproject" element={<Create_Project />} />
         </Routes>
         <Footer />
       </Router>

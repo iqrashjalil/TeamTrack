@@ -1,4 +1,3 @@
-// userSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { serverUrl } from "../../serverUrl";
@@ -8,6 +7,8 @@ const initialState = {
   error: null,
   isAuthenticated: false,
 };
+
+//* Register Thunk
 
 export const register = createAsyncThunk(
   "user/register",
@@ -36,6 +37,8 @@ export const register = createAsyncThunk(
     }
   }
 );
+
+//* Login Thunk
 
 export const login = createAsyncThunk(
   "user/login",
@@ -68,6 +71,8 @@ export const login = createAsyncThunk(
   }
 );
 
+//* Load User Thunk
+
 export const loadUser = createAsyncThunk("user/loaduser", async () => {
   try {
     const { data } = await axios.get(`${serverUrl}/api/auth/getuser`, {
@@ -82,6 +87,8 @@ export const loadUser = createAsyncThunk("user/loaduser", async () => {
     return rejectWithValue(message);
   }
 });
+
+//* Logout Thunk
 
 export const logout = createAsyncThunk("user/logout", async () => {
   try {
@@ -100,12 +107,38 @@ export const logout = createAsyncThunk("user/logout", async () => {
   }
 });
 
+//* Get All Project Managers Thunk
+
+export const getAllProjectManagers = createAsyncThunk(
+  "user/getAllProjectManagers",
+  async () => {
+    try {
+      const { data } = await axios.get(
+        `${serverUrl}/api/auth/getprojectmanagers`,
+        {
+          withCredentials: true,
+        }
+      );
+      return data.project_managers;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //* Register Cases
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -121,6 +154,7 @@ const userSlice = createSlice({
         state.error = action.payload;
         state.isAuthenticated = false;
       })
+      //* Login Cases
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -136,6 +170,7 @@ const userSlice = createSlice({
         state.error = action.payload;
         state.isAuthenticated = false;
       })
+      //* Load User Cases
       .addCase(loadUser.pending, (state, action) => {
         state.loading = true;
         state.error = null;
@@ -151,6 +186,7 @@ const userSlice = createSlice({
         state.error = action.payload;
         state.isAuthenticated = false;
       })
+      //* Logout Cases
       .addCase(logout.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -165,6 +201,19 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.user = null;
+      })
+      //* Get All Project Managers Cases
+      .addCase(getAllProjectManagers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllProjectManagers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.projectManagers = action.payload;
+      })
+      .addCase(getAllProjectManagers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

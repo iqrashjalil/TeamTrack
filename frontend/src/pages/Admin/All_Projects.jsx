@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GoDotFill } from "react-icons/go";
 import { getAllProjects } from "../store/slices/projectSlice";
 
-const Home = () => {
+const All_Projects = () => {
   const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.projects);
   useEffect(() => {
@@ -57,4 +57,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default All_Projects;

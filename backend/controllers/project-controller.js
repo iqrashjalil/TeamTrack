@@ -54,7 +54,7 @@ const deleteProject = catchAsyncError(async (req, res, next) => {
 //* Get All Projects
 
 const getAllProjects = catchAsyncError(async (req, res, next) => {
-  const projects = await Project.find();
+  const projects = await Project.find().populate("projectManager");
   res.status(200).json({
     success: true,
     All_Projects: projects,
