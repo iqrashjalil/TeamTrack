@@ -5,7 +5,7 @@ import { FaLinkedin } from "react-icons/fa6";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-white p-2">
+      <footer className="bg-slate-100 p-2">
         <section className="md:flex md:justify-between">
           <section className="flex flex-col items-center my-4">
             <img className="w-60" src={logo} alt="" />

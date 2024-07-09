@@ -66,7 +66,8 @@ const getProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const project = await Project.findById(id)
     .populate("members")
-    .populate("task");
+    .populate("task")
+    .populate("projectManager");
 
   if (!project) {
     return next(new ErrorHandler("Project not found", 404));

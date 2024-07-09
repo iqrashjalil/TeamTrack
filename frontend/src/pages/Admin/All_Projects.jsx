@@ -1,17 +1,37 @@
 import React, { useEffect } from "react";
-import Sidebar from "../components/layout/Sidebar";
+import Sidebar from "../../components/layout/Sidebar.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { GoDotFill } from "react-icons/go";
-import { getAllProjects } from "../store/slices/projectSlice";
+import { useNavigate } from "react-router-dom";
+import {
+  clearMessage,
+  getAllProjects,
+} from "../../store/slices/projectSlice.jsx";
+import { toast } from "react-toastify";
 
 const All_Projects = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { projects } = useSelector((state) => state.projects);
+  const { projects, error, message } = useSelector((state) => state.projects);
   useEffect(() => {
     dispatch(getAllProjects());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.success(message);
+
+      dispatch(clearMessage());
+    }
+  }, [message, error]);
+
+  const handleCardClick = (id) => () => {
+    navigate(`/projectdetails/${id}`);
+  };
   return (
-    <section className="h-full flex">
+    <section className="min-h-screen flex">
       <div>
         <Sidebar />
       </div>
@@ -22,7 +42,10 @@ const All_Projects = () => {
         <div className="flex justify-center gap-4 mt-4 flex-wrap">
           {projects &&
             projects.map((project) => (
-              <div className="bg-slate-100 rounded p-2 w-64 h-32">
+              <div
+                onClick={handleCardClick(project._id)}
+                className="bg-slate-100 rounded p-2 w-64 h-32 cursor-pointer hover:bg-slate-200 transition-all duration-200"
+              >
                 <h1 className="text-slate-500 text-lg font-bold truncate">
                   {project.projectName}
                 </h1>

@@ -1,39 +1,68 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProjectManagers } from "../../store/slices/UserSlice.jsx";
 import {
-  clearMessage,
-  createProject,
+  getSingleProject,
+  updateProject,
 } from "../../store/slices/projectSlice.jsx";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
-const Create_Project = () => {
+const Edit_Project = () => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const { projectManagers } = useSelector((state) => state.users);
-  const { message, error } = useSelector((state) => state.projects);
+  const { message, error, projectDetails } = useSelector(
+    (state) => state.projects
+  );
+
+  const [formData, setFormData] = useState({
+    projectName: "",
+    description: "",
+    projectManager: "",
+  });
 
   useEffect(() => {
     if (message) {
       toast.success(message);
-      dispatch(clearMessage());
     }
     if (error) {
       toast.error(error);
     }
     dispatch(getAllProjectManagers());
-  }, [dispatch, message, toast, error]);
+    if (id) {
+      dispatch(getSingleProject(id));
+    }
+  }, [dispatch, message, error, id]);
+
+  useEffect(() => {
+    if (projectDetails) {
+      setFormData({
+        projectName: projectDetails.projectName,
+        description: projectDetails.description,
+        projectManager: projectDetails.projectManager?._id || "",
+      });
+    }
+  }, [projectDetails]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
+    const updatedFormData = new FormData();
 
-    formData.append("projectName", e.target.projectName.value);
-    formData.append("description", e.target.description.value);
-    formData.append("projectManager", e.target.projectManager.value);
+    updatedFormData.append("projectName", formData.projectName);
+    updatedFormData.append("description", formData.description);
+    updatedFormData.append("projectManager", formData.projectManager);
 
-    dispatch(createProject(formData));
+    console.log("Updated FormData:", updatedFormData);
+
+    dispatch(updateProject({ id, updatedFormData }));
   };
+
   return (
     <>
       <section className="flex">
@@ -42,7 +71,7 @@ const Create_Project = () => {
         </div>
         <div className="p-4 w-full lg:flex flex-col items-center">
           <h1 className="text-4xl flex justify-center font-bold text-slate-400">
-            <span>Create Project</span>
+            <span>Edit Project</span>
           </h1>
           <hr className="mt-2" />
           <form
@@ -55,10 +84,13 @@ const Create_Project = () => {
               </label>
               <input
                 id="projectName"
+                name="projectName"
                 className="w-full p-2 mt-1 rounded bg-slate-200"
                 type="text"
                 placeholder="Enter Project Name"
                 required
+                value={formData.projectName}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -72,6 +104,8 @@ const Create_Project = () => {
                 placeholder="Enter Project Description"
                 rows="10"
                 required
+                value={formData.description}
+                onChange={handleChange}
               ></textarea>
             </div>
             <div>
@@ -83,6 +117,8 @@ const Create_Project = () => {
                 name="projectManager"
                 id="projectManager"
                 required
+                value={formData.projectManager}
+                onChange={handleChange}
               >
                 <option value="">Select Project Manager</option>
                 {projectManagers &&
@@ -95,10 +131,9 @@ const Create_Project = () => {
             </div>
             <button
               type="submit"
-              className="bg-purple-600 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
+              className="bg-purple-400 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-500 transition duration-200"
             >
-              {" "}
-              Create
+              Update
             </button>
           </form>
         </div>
@@ -107,4 +142,4 @@ const Create_Project = () => {
   );
 };
 
-export default Create_Project;
+export default Edit_Project;

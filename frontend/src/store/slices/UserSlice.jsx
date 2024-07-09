@@ -132,6 +132,23 @@ export const getAllProjectManagers = createAsyncThunk(
   }
 );
 
+//* Get All Users
+
+export const getAllUsers = createAsyncThunk("user/getAllUsers", async () => {
+  try {
+    const { data } = await axios.get(`${serverUrl}/api/auth/getusers`, {
+      withCredentials: true,
+    });
+    return data.All_Users;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      "An unknown error occurred";
+    return rejectWithValue(message);
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -212,6 +229,19 @@ const userSlice = createSlice({
         state.projectManagers = action.payload;
       })
       .addCase(getAllProjectManagers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Get All Users Cases
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allusers = action.payload;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

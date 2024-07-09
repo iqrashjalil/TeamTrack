@@ -68,10 +68,101 @@ export const getAllProjects = createAsyncThunk(
   }
 );
 
+//* Get Single Project
+
+export const getSingleProject = createAsyncThunk(
+  "project/getSingleProject",
+  async (projectId, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+
+      const { data } = await axios.get(
+        `${serverUrl}/api/project/getproject/${projectId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Update Project Details
+export const updateProject = createAsyncThunk(
+  "projects/updateProject",
+  async ({ id, updatedFormData }, { rejectWithValue }) => {
+    try {
+      // Log FormData contents
+      for (let [key, value] of updatedFormData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      const response = await axios.put(
+        `${serverUrl}/api/project/updateproject/${id}`,
+        updatedFormData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Log response data
+      console.log("Response data:", response.data);
+
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Delete Project
+
+export const deleteProject = createAsyncThunk(
+  "project/deleteProject",
+  async (projectId, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+      const { data } = await axios.delete(
+        `${serverUrl}/api/project/deleteproject/${projectId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const projectSlice = createSlice({
   name: "project",
   initialState,
-  reducers: {},
+  reducers: {
+    clearMessage(state) {
+      state.message = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //* Create Project Cases
@@ -99,8 +190,49 @@ const projectSlice = createSlice({
       .addCase(getAllProjects.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      //* Get Single Project Cases
+      .addCase(getSingleProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSingleProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.projectDetails = action.payload.projectDetails;
+      })
+      .addCase(getSingleProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Update Project Cases
+      .addCase(updateProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(updateProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Delete Project Cases
+      .addCase(deleteProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(deleteProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
+
+export const { clearMessage } = projectSlice.actions;
 
 export default projectSlice.reducer;

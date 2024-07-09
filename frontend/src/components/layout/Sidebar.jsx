@@ -9,7 +9,7 @@ import { FaUsers } from "react-icons/fa";
 const Sidebar = () => {
   const { user } = useSelector((state) => state.users);
   return (
-    <section className="w-12 md:w-52 lg:w-72 h-screen bg-slate-100 p-1 ">
+    <section className="w-12 md:w-52 lg:w-72 h-full bg-slate-100 p-1 ">
       {user?.role === "admin" && (
         <ul className="flex flex-col gap-4">
           <NavLink
@@ -39,7 +39,7 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className="flex p-1 gap-3 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/alltasks"}
           >
             <BsListTask className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">All Tasks</span>
@@ -55,7 +55,7 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/allusers"}
           >
             <FaUsers className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">All Users</span>
