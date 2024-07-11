@@ -3,8 +3,10 @@ import Sidebar from "../../components/layout/Sidebar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProjects } from "../../store/slices/projectSlice.jsx";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 
-const All_Tasks = () => {
+const Select_Project = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.projects);
 
@@ -12,6 +14,9 @@ const All_Tasks = () => {
     dispatch(getAllProjects());
   }, [dispatch]);
 
+  const handleClick = (projectid) => {
+    navigate(`/task/${projectid}`);
+  };
   return (
     <>
       <section className="flex min-h-screen">
@@ -23,8 +28,7 @@ const All_Tasks = () => {
 
           {projects?.map((project) => (
             <div
-
-            onClick={""}
+              onClick={(e) => handleClick(project._id)}
               className="flex justify-between items-center rounded border mb-2 border-slate-200 p-2 cursor-pointer hover:bg-slate-100 transition-all duration-200 group"
               key={project._id}
             >
@@ -42,4 +46,4 @@ const All_Tasks = () => {
   );
 };
 
-export default All_Tasks;
+export default Select_Project;

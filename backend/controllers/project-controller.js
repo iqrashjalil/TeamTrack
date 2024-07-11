@@ -79,10 +79,26 @@ const getProject = catchAsyncError(async (req, res, next) => {
   });
 });
 
+//* Get Project for a user
+
+const getUserProjects = catchAsyncError(async (req, res, next) => {
+  const userId = req.user._id;
+  const projects = await Project.find({ projectManager: userId });
+
+  if (!projects) {
+    return next(new ErrorHandler("No projects found for this user", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    projects: projects,
+  });
+});
 export default {
   createProject,
   updateProject,
   deleteProject,
   getAllProjects,
   getProject,
+  getUserProjects,
 };

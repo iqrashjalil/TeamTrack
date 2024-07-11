@@ -12,7 +12,10 @@ import All_Projects from "./pages/Admin/All_Projects.jsx";
 import Project_Details from "./pages/Admin/Project_Details.jsx";
 import Edit_Project from "./pages/Admin/Edit_Project.jsx";
 import All_Users from "./pages/Admin/All_Users.jsx";
-import All_Tasks from "./pages/Admin/All_Tasks.jsx";
+import Select_Project from "./pages/Admin/Select_Project.jsx";
+import Project_Tasks from "./pages/Admin/Project_Tasks.jsx";
+import Create_Task from "./pages/Admin/Create_Task.jsx";
+import Create_Subtask from "./pages/Admin/Create_Subtask.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +34,10 @@ function App() {
           <Route path="/projectdetails/:id" element={<Project_Details />} />
           <Route path="/editproject/:id" element={<Edit_Project />} />
           <Route path="/allusers" element={<All_Users />} />
-          <Route path="/alltasks" element={<All_Tasks />} />
+          <Route path="/alltasks" element={<Select_Project />} />
+          <Route path="/task/:id" element={<Project_Tasks />} />
+          <Route path="/createtask" element={<Create_Task />} />
+          <Route path="/createsubtask" element={<Create_Subtask />} />
         </Routes>
         <Footer />
       </Router>

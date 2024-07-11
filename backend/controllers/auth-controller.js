@@ -82,7 +82,7 @@ const logout = catchAsyncError(async (req, res, next) => {
 const getUser = catchAsyncError(async (req, res, next) => {
   console.log(req.user.id);
   const userid = req.user.id;
-  const user = await User.findById(userid);
+  const user = await User.findById(userid).populate("managedTeamMembers");
   if (!user) {
     return next(new ErrorHandler("User Not Found", 404));
   }

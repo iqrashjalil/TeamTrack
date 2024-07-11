@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   projects: [],
+  userProjects: [],
 };
 
 //* Create Project
@@ -113,9 +114,6 @@ export const updateProject = createAsyncThunk(
         }
       );
 
-      // Log response data
-      console.log("Response data:", response.data);
-
       return response.data;
     } catch (error) {
       const message =
@@ -143,6 +141,30 @@ export const deleteProject = createAsyncThunk(
         config
       );
       return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const getUserProjects = createAsyncThunk(
+  "project/getUserProjects",
+  async (_, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+      const { data } = await axios.get(
+        `${serverUrl}/api/project/getuserprojects`,
+        config
+      );
+      return data.projects;
     } catch (error) {
       const message =
         (error.response &&
@@ -228,7 +250,20 @@ const projectSlice = createSlice({
       })
       .addCase(deleteProject.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload.message;
+      })
+      //* Get User Projects Cases
+      .addCase(getUserProjects.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserProjects.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userProjects = action.payload;
+      })
+      .addCase(getUserProjects.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });

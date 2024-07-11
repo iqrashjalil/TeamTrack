@@ -32,7 +32,7 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/createtask"}
           >
             <IoMdAdd className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">Create Task</span>
@@ -67,7 +67,7 @@ const Sidebar = () => {
         <ul className="flex flex-col gap-4">
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/allprojects"}
           >
             <MdSpaceDashboard className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">
@@ -76,21 +76,21 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/createtask"}
           >
             <IoMdAdd className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">Create Task</span>
           </NavLink>
           <NavLink
             className="flex p-1 gap-3 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/alltasks"}
           >
             <BsListTask className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">All Tasks</span>
           </NavLink>
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/createsubtask"}
           >
             <IoMdAddCircle className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">
