@@ -81,7 +81,7 @@ const Project_Details = () => {
           </div>
 
           <div className="mt-4 w-full md:w-1/2 md:p-4 md:mt-0">
-            {projectDetails?.projectManager.length > 0 && (
+            {projectDetails?.projectManager && (
               <div className="border rounded border-slate-200 p-2">
                 <h1 className="font-bold text-lg text-slate-700">
                   Team Members

@@ -2,24 +2,28 @@ import React, { useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProjects } from "../../store/slices/projectSlice";
-import { createTask, projectTasks } from "../../store/slices/Task_Slice";
+import { projectTasks } from "../../store/slices/Task_Slice";
 import { toast } from "react-toastify";
+import { createSubTask, resetSuccess } from "../../store/slices/SubTask_Slice";
 
 const Create_Subtask = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   const { userProjects } = useSelector((state) => state.projects);
-  const { error, success, allTasks } = useSelector((state) => state.tasks);
+  const { allTasks } = useSelector((state) => state.tasks);
+  const { error, success } = useSelector((state) => state.subTasks);
 
   useEffect(() => {
     dispatch(getUserProjects());
   }, [dispatch]);
+
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
     if (success) {
-      toast.success("Task created successfully!");
+      toast.success("Sub-Task created successfully!");
+      dispatch(resetSuccess());
     }
   }, [error, success]);
 
@@ -29,16 +33,20 @@ const Create_Subtask = () => {
 
     formData.append("title", e.target.title.value);
     formData.append("description", e.target.description.value);
-    formData.append("projectId", e.target.projectId.value);
+    formData.append("taskId", e.target.taskId.value);
     formData.append("assignedTo", e.target.assignedTo.value);
     formData.append("dueDate", e.target.dueDate.value);
 
-    dispatch(createTask(formData));
+    dispatch(createSubTask(formData));
   };
 
-  const handleOnClick = (id) => {
-    dispatch(projectTasks(id));
+  const handleProjectChange = (e) => {
+    const projectId = e.target.value;
+    if (projectId) {
+      dispatch(projectTasks(projectId));
+    }
   };
+
   return (
     <>
       <section className="flex min-h-screen">
@@ -47,8 +55,9 @@ const Create_Subtask = () => {
         </div>
         <div className="w-full">
           <div className="p-4 w-full flex flex-col items-center">
-            <h1 className="text-4xl flex justify-center font-bold text-slate-400">
-              <span>Create Sub-Task</span>
+            <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
+              <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+              Create Sub-Task
             </h1>
             <hr className="mt-2" />
             <form
@@ -61,6 +70,7 @@ const Create_Subtask = () => {
                 </label>
                 <input
                   id="title"
+                  name="title"
                   className="w-full p-2 mt-1 rounded bg-slate-200"
                   type="text"
                   placeholder="Enter Sub-Task Title"
@@ -88,38 +98,33 @@ const Create_Subtask = () => {
                   className="w-full p-2 mt-1 rounded bg-slate-200"
                   name="projectId"
                   id="projectId"
+                  onChange={handleProjectChange}
                   required
                 >
                   <option value="">Select Project</option>
                   {userProjects &&
                     userProjects.map((userProject) => (
-                      <option
-                        key={userProject._id}
-                        value={userProject?._id}
-                        onClick={() => {
-                          handleOnClick(userProject?._id);
-                        }}
-                      >
+                      <option key={userProject._id} value={userProject?._id}>
                         {userProject.projectName}
                       </option>
                     ))}
                 </select>
               </div>
               <div>
-                <label className="text-slate-400" htmlFor="task">
+                <label className="text-slate-400" htmlFor="taskId">
                   Select Task<span className="text-red-600">*</span>
                 </label>
                 <select
                   className="w-full p-2 mt-1 rounded bg-slate-200"
-                  name="projectId"
-                  id="projectId"
+                  name="taskId"
+                  id="taskId"
                   required
                 >
                   <option value="">Select Task</option>
                   {allTasks &&
                     allTasks.map((task) => (
                       <option key={task._id} value={task?._id}>
-                        {task.projectName}
+                        {task.title}
                       </option>
                     ))}
                 </select>
@@ -159,7 +164,6 @@ const Create_Subtask = () => {
                 type="submit"
                 className="bg-purple-600 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
               >
-                {" "}
                 Create Sub-Task
               </button>
             </form>

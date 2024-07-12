@@ -6,6 +6,7 @@ import fs from "fs";
 import cloudinary from "cloudinary";
 // import cloudinary from "../cloudinary.config.js";
 import dotenv from "dotenv";
+import { log } from "console";
 dotenv.config({ path: "../config/config.env" });
 
 cloudinary.config({
@@ -122,15 +123,48 @@ const deleteUser = catchAsyncError(async (req, res, next) => {
 const updateUser = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
   const updates = req.body;
-  const user = await User.findByIdAndUpdate(id, updates, { new: true });
-  if (!user) {
-    return next(new ErrorHandler("User Not Found", 404));
+  const profilePicture = req.file;
+
+  console.log("updates:", updates);
+  console.log("profilePicture:", profilePicture);
+
+  try {
+    // If there's a new profile picture, upload it to Cloudinary
+    if (profilePicture) {
+      const uploadPP = await cloudinary.v2.uploader.upload(
+        profilePicture.path,
+        {
+          folder: "profile_pictures",
+        }
+      );
+
+      // Add the new profile picture URL to updates
+      updates.profilePicture = uploadPP.secure_url;
+
+      // Delete the temporary file
+      fs.unlinkSync(profilePicture.path);
+    }
+
+    // Parse managedTeamMembers if necessary
+    if (updates.managedTeamMembers) {
+      updates.managedTeamMembers = JSON.parse(updates.managedTeamMembers);
+    }
+
+    // Update the user in the database
+    const user = await User.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!user) {
+      return next(new ErrorHandler("User Not Found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User Updated Successfully",
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Server Error", 500));
   }
-  res.status(200).json({
-    success: true,
-    message: "User Updated Successfully",
-    user: user,
-  });
 });
 
 //* Get All Users

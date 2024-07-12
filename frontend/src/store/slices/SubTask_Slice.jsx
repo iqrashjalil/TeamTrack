@@ -42,7 +42,11 @@ export const createSubTask = createAsyncThunk(
 const subTaskSlice = createSlice({
   name: "task",
   initialState,
-  reducers: {},
+  reducers: {
+    resetSuccess(state) {
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //* Create Task Cases
@@ -61,4 +65,5 @@ const subTaskSlice = createSlice({
   },
 });
 
+export const { resetSuccess } = subTaskSlice.actions;
 export default subTaskSlice.reducer;

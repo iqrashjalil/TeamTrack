@@ -41,8 +41,9 @@ const Create_Project = () => {
           <Sidebar />
         </div>
         <div className="p-4 w-full lg:flex flex-col items-center">
-          <h1 className="text-4xl flex justify-center font-bold text-slate-400">
-            <span>Create Project</span>
+          <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
+            <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+            Create Project
           </h1>
           <hr className="mt-2" />
           <form

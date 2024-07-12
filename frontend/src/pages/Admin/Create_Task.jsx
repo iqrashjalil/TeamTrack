@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProjects } from "../../store/slices/projectSlice";
-import { createTask } from "../../store/slices/Task_Slice";
+import { createTask, resetSuccess } from "../../store/slices/Task_Slice";
 import { toast } from "react-toastify";
 
 const Create_Task = () => {
@@ -12,15 +12,18 @@ const Create_Task = () => {
   const { error, success } = useSelector((state) => state.tasks);
 
   useEffect(() => {
+    dispatch(getUserProjects());
+  }, [dispatch, error]);
+
+  useEffect(() => {
     if (error) {
       toast.error(error);
     }
     if (success) {
       toast.success("Task created successfully!");
+      dispatch(resetSuccess());
     }
-    dispatch(getUserProjects());
-  }, [dispatch, toast, error]);
-
+  }, [success, error]);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -42,8 +45,9 @@ const Create_Task = () => {
         </div>
         <div className="w-full">
           <div className="p-4 w-full flex flex-col items-center">
-            <h1 className="text-4xl flex justify-center font-bold text-slate-400">
-              <span>Create Task</span>
+            <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
+              <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+              Create Task
             </h1>
             <hr className="mt-2" />
             <form

@@ -16,6 +16,7 @@ import Select_Project from "./pages/Admin/Select_Project.jsx";
 import Project_Tasks from "./pages/Admin/Project_Tasks.jsx";
 import Create_Task from "./pages/Admin/Create_Task.jsx";
 import Create_Subtask from "./pages/Admin/Create_Subtask.jsx";
+import User_Details from "./pages/Admin/User_Details.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
           <Route path="/task/:id" element={<Project_Tasks />} />
           <Route path="/createtask" element={<Create_Task />} />
           <Route path="/createsubtask" element={<Create_Subtask />} />
+          <Route path="/userdetails/:id" element={<User_Details />} />
         </Routes>
         <Footer />
       </Router>

@@ -37,12 +37,16 @@ const All_Projects = () => {
       </div>
       <div className="w-full p-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-400">All Projects</h1>
+          <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
+            <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+            All Projects
+          </h1>
         </div>
         <div className="flex justify-center gap-4 mt-4 flex-wrap">
           {projects &&
             projects.map((project) => (
               <div
+                key={project._id}
                 onClick={handleCardClick(project._id)}
                 className="bg-slate-100 rounded p-2 w-64 h-32 cursor-pointer hover:bg-slate-200 transition-all duration-200"
               >

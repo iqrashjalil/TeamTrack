@@ -17,7 +17,9 @@ router.route("/logout").post(authController.logout);
 router.route("/getuser").get(authMiddleware, authController.getUser);
 router.route("/getprofile/:id").get(authMiddleware, authController.getProfile);
 router.route("/deleteuser/:id").delete(authController.deleteUser);
-router.route("/updateuser/:id").put(authController.updateUser);
+router
+  .route("/updateuser/:id")
+  .put(upload.single("profilePicture"), authController.updateUser);
 router
   .route("/getusers")
   .get(authMiddleware, isAdmin, authController.getAllUsers);

@@ -24,7 +24,10 @@ const Project_Tasks = () => {
           <>
             {" "}
             <div className="p-2 w-full">
-              <h1 className="font-bold text-2xl text-slate-500">All Tasks</h1>
+              <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
+                <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+                All Tasks
+              </h1>
 
               {allTasks?.map((task) => (
                 <div

@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   isAuthenticated: false,
+  success: false,
 };
 
 //* Register Thunk
@@ -149,10 +150,95 @@ export const getAllUsers = createAsyncThunk("user/getAllUsers", async () => {
   }
 });
 
+//* Get Single User
+
+export const getSingleUser = createAsyncThunk(
+  "user/getSingleUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${serverUrl}/api/auth/getprofile/${userId}`,
+        { withCredentials: true }
+      );
+      return data.profile;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Update Profile
+
+export const updateProfile = createAsyncThunk(
+  "user/updateProfile",
+  async ({ id, userData }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      };
+
+      // Log userData before making the request
+      console.log("userData to be sent:", userData);
+
+      const { data } = await axios.put(
+        `${serverUrl}/api/auth/updateuser/${id}`,
+        userData,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Delete User
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(
+        `${serverUrl}/api/auth/deleteuser/${userId}`,
+        { withCredentials: true }
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetSuccess(state) {
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //* Register Cases
@@ -244,8 +330,50 @@ const userSlice = createSlice({
       .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      //* Get Single User Cases
+      .addCase(getSingleUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSingleUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile = action.payload;
+      })
+      .addCase(getSingleUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Update Profile Cases
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+        state.message = action.payload.message;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Delete Profile Cases
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
+
+export const { resetSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -54,12 +54,33 @@ const deleteProject = catchAsyncError(async (req, res, next) => {
 //* Get All Projects
 
 const getAllProjects = catchAsyncError(async (req, res, next) => {
-  const projects = await Project.find().populate("projectManager");
+  const userId = req.user._id;
+  const userRole = req.user.role;
+  console.log(req.user);
+  let projects;
+
+  if (userRole === "admin") {
+    projects = await Project.find()
+      .populate("projectManager")
+      .populate("members");
+  } else if (userRole === "project_manager") {
+    projects = await Project.find({ projectManager: userId })
+      .populate("projectManager")
+      .populate("members");
+  } else if (userRole === "team_member") {
+    projects = await Project.find({ members: userId })
+      .populate("projectManager")
+      .populate("members");
+  } else {
+    return next(new ErrorHandler("Project not found", 404));
+  }
+
   res.status(200).json({
     success: true,
     All_Projects: projects,
   });
 });
+
 //* Get Single Project
 
 const getProject = catchAsyncError(async (req, res, next) => {
