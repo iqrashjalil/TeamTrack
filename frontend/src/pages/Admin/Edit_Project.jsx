@@ -60,7 +60,7 @@ const Edit_Project = () => {
 
     console.log("Updated FormData:", updatedFormData);
 
-    dispatch(updateProject({ id, updatedFormData }));
+    dispatch(updateProject({ id: id, updatedFormData: updatedFormData }));
   };
 
   return (
@@ -132,7 +132,7 @@ const Edit_Project = () => {
             </div>
             <button
               type="submit"
-              className="bg-purple-400 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-500 transition duration-200"
+              className="bg-purple-600 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
             >
               Update
             </button>

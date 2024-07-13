@@ -28,7 +28,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <header className="flex justify-between items-center bg-white h-12 px-4">
+      <header className="flex justify-between items-center bg-slate-100 h-12 px-4">
         <div className="flex-shrink-0 flex-grow-0">
           <img className="w-8" src={logo} alt="" />
         </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
             <BiSolidDownArrow className="text-1xl text-slate-200" />
           </div>
           {isDropdownOpen ? (
-            <div className="absolute top-14 bg-white p-1 right-20 md:right-8 rounded">
+            <div className="absolute top-14 bg-slate-100 right-20 md:right-8 rounded">
               <ul>
                 <li
                   onClick={toggleDropdown}
@@ -76,7 +76,7 @@ const Navbar = () => {
         </div>
         {isNavbarOpen ? (
           <>
-            <nav className="w-full absolute top-12 left-0 h-screen bg-white md:block">
+            <nav className="w-full absolute top-12 left-0 z-10 h-screen bg-slate-100 md:block">
               <ul className="flex flex-col justify-center items-center h-full gap-10">
                 <li>
                   <NavLink
@@ -122,7 +122,7 @@ const Navbar = () => {
         ) : (
           ""
         )}
-        <nav className="w-full md:flex md:justify-end hidden bg-white">
+        <nav className="w-full md:flex md:justify-end hidden bg-slate-100">
           <ul className="flex items-center  gap-10">
             <li>
               <NavLink

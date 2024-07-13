@@ -101,7 +101,12 @@ export const updateProject = createAsyncThunk(
   "projects/updateProject",
   async ({ id, updatedFormData }, { rejectWithValue }) => {
     try {
-      // Log FormData contents
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
       for (let [key, value] of updatedFormData.entries()) {
         console.log(`${key}: ${value}`);
       }
@@ -109,11 +114,9 @@ export const updateProject = createAsyncThunk(
       const response = await axios.put(
         `${serverUrl}/api/project/updateproject/${id}`,
         updatedFormData,
-        {
-          withCredentials: true,
-        }
+        config
       );
-
+      console.log(response.data);
       return response.data;
     } catch (error) {
       const message =

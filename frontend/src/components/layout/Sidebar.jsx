@@ -46,7 +46,7 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            to={"/createsubtask"}
           >
             <IoMdAddCircle className="text-4xl text-purple-600" />
             <span className="hidden  text-slate-400 md:block">

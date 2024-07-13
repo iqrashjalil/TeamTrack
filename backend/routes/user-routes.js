@@ -35,4 +35,8 @@ router
 router
   .route("/getunassignedteammembers")
   .get(authMiddleware, isAdmin, authController.getUnassignedTeamMembers);
+
+router
+  .route("/removeteammember/:userId/:teamMemberId")
+  .delete(authMiddleware, isAdmin, authController.removeManagedTeamMember);
 export default router;

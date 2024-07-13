@@ -11,7 +11,9 @@ const router = express.Router();
 router
   .route("/createProject")
   .post(authMiddleware, isAdmin, projectController.createProject);
-router.route("/updateproject/:id").put(projectController.updateProject);
+router
+  .route("/updateproject/:id")
+  .put(authMiddleware, isAdmin, projectController.updateProject);
 router
   .route("/deleteproject/:id")
   .delete(authMiddleware, isAdmin, projectController.deleteProject);

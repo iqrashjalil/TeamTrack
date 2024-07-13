@@ -4,9 +4,7 @@ import sendToken from "../utils/jwtToken.js";
 import { ErrorHandler } from "../utils/error-handler.js";
 import fs from "fs";
 import cloudinary from "cloudinary";
-// import cloudinary from "../cloudinary.config.js";
 import dotenv from "dotenv";
-import { log } from "console";
 dotenv.config({ path: "../config/config.env" });
 
 cloudinary.config({
@@ -81,7 +79,6 @@ const logout = catchAsyncError(async (req, res, next) => {
 //* Get User
 
 const getUser = catchAsyncError(async (req, res, next) => {
-  console.log(req.user.id);
   const userid = req.user.id;
   const user = await User.findById(userid).populate("managedTeamMembers");
   if (!user) {
@@ -94,7 +91,7 @@ const getUser = catchAsyncError(async (req, res, next) => {
 
 const getProfile = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("managedTeamMembers");
   if (!user) {
     return next(new ErrorHandler("User Not Found", 404));
   }
@@ -289,6 +286,38 @@ const getProjectManagers = catchAsyncError(async (req, res, next) => {
     project_managers: projectManagers,
   });
 });
+
+//* Remove Team Members From Project_Managers Team
+
+const removeManagedTeamMember = catchAsyncError(async (req, res, next) => {
+  const { userId, teamMemberId } = req.params;
+
+  // Find the user who manages the team members
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  // Check if the team member exists in the managedTeamMembers array
+  const memberIndex = user.managedTeamMembers.indexOf(teamMemberId);
+  if (memberIndex === -1) {
+    res.status(404);
+    throw new Error("Team member not found");
+  }
+
+  // Remove the team member
+  user.managedTeamMembers.splice(memberIndex, 1);
+
+  // Save the updated user document
+  await user.save();
+
+  res
+    .status(200)
+    .json({ success: true, message: "Team member removed successfully" });
+});
+
 export default {
   register,
   login,
@@ -302,4 +331,5 @@ export default {
   assignTeamMember,
   getUnassignedTeamMembers,
   getUser,
+  removeManagedTeamMember,
 };

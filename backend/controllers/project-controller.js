@@ -25,13 +25,13 @@ const createProject = catchAsyncError(async (req, res, next) => {
 const updateProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const updatedData = req.body;
-  const project = await Project.findByIdAndUpdate(id, updatedData, {
-    new: true,
-    runValidators: true,
-  });
+  console.log(updatedData);
+  let project = await Project.findByIdAndUpdate(id);
   if (!project) {
     return next(new ErrorHandler("Project not found", 404));
   }
+
+  await project.updateOne(updatedData);
   res
     .status(200)
     .json({ success: true, message: "Project Updated Successfully" });
@@ -56,7 +56,7 @@ const deleteProject = catchAsyncError(async (req, res, next) => {
 const getAllProjects = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
   const userRole = req.user.role;
-  console.log(req.user);
+
   let projects;
 
   if (userRole === "admin") {

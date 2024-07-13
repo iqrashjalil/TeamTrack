@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <>
       <section className="p-2 flex justify-center items-center h-screen">
-        <div className="bg-white w-11/12 md:w-1/2 lg:w-1/4 px-2 rounded">
+        <div className="bg-slate-100 w-11/12 md:w-1/2 lg:w-1/4 px-2 rounded">
           <div className="flex justify-center items-center flex-col">
             <img className="w-20" src={logo} alt="" />
             <h1 className=" font-semibold text-xl lg:font-bold md:font-bold md:text-2xl lg:text-2xl text-purple-500  flex justify-center pt-4 ">

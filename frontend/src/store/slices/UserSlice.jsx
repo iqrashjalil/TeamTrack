@@ -231,6 +231,54 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+//* Get Unassigned Team Members
+
+export const getUnAssignedTeamMembers = createAsyncThunk(
+  "user/getUnAssignedTeamMembers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${serverUrl}/api/auth/getunassignedteammembers`,
+        { withCredentials: true }
+      );
+      return data.team_members;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Remove Team member
+
+export const removeTeamMember = createAsyncThunk(
+  "user/removeTeamMember",
+  async ({ userId, teamMemberId }, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+      const { data } = await axios.delete(
+        `${serverUrl}/api/auth/removeteammember/${userId}/${teamMemberId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -368,6 +416,32 @@ const userSlice = createSlice({
         state.success = action.payload.success;
       })
       .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Get UnAssigned Team Members Cases
+      .addCase(getUnAssignedTeamMembers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUnAssignedTeamMembers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.unAssignedMembers = action.payload;
+      })
+      .addCase(getUnAssignedTeamMembers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Remove Team Members Cases
+      .addCase(removeTeamMember.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeTeamMember.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+      })
+      .addCase(removeTeamMember.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
