@@ -13,7 +13,7 @@ router
   .post(authMiddleware, isAdmin, projectController.createProject);
 router
   .route("/updateproject/:id")
-  .put(authMiddleware, isAdmin, projectController.updateProject);
+  .put(authMiddleware, isProjectManger, projectController.updateProject);
 router
   .route("/deleteproject/:id")
   .delete(authMiddleware, isAdmin, projectController.deleteProject);
@@ -27,4 +27,14 @@ router
   .route("/getuserprojects")
   .get(authMiddleware, isProjectManger, projectController.getUserProjects);
 
+router
+  .route("/removememberfromproject/:projectId/:teamMemberId")
+  .delete(
+    authMiddleware,
+    isProjectManger,
+    projectController.removeMemberFromProject
+  );
+router
+  .route("/addmember/:projectId/:teamMemberId")
+  .put(authMiddleware, isProjectManger, projectController.addMember);
 export default router;

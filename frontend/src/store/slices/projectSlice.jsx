@@ -180,6 +180,62 @@ export const getUserProjects = createAsyncThunk(
   }
 );
 
+//* Remove Team Member From Project
+
+export const removeMemberFromproject = createAsyncThunk(
+  "project/removeMemberFromProject",
+  async ({ projectId, teamMemberId }, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+      const { data } = await axios.delete(
+        `${serverUrl}/api/project/removememberfromproject/${projectId}/${teamMemberId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+//* Remove Team Member From Project
+
+export const addMember = createAsyncThunk(
+  "project/addMember",
+  async ({ projectId, teamMemberId, memberData }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+      const { data } = await axios.put(
+        `${serverUrl}/api/project/addmember/${projectId}/${teamMemberId}`,
+        memberData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const projectSlice = createSlice({
   name: "project",
   initialState,
@@ -265,6 +321,32 @@ const projectSlice = createSlice({
         state.userProjects = action.payload;
       })
       .addCase(getUserProjects.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+      //* Remove Team Member From Project Cases
+      .addCase(removeMemberFromproject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeMemberFromproject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+      })
+      .addCase(removeMemberFromproject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+      //* Add Team Member In Project Cases
+      .addCase(addMember.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addMember.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(addMember.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
       });

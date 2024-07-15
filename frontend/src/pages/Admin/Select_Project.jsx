@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProjects } from "../../store/slices/projectSlice.jsx";
-import { FaArrowRight } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
 
 const Select_Project = () => {
   const navigate = useNavigate();
@@ -14,8 +15,12 @@ const Select_Project = () => {
     dispatch(getAllProjects());
   }, [dispatch]);
 
-  const handleClick = (projectid) => {
+  const handleOnClick = (projectid) => {
     navigate(`/task/${projectid}`);
+  };
+
+  const handleDelete = (projectid) => {
+    dispatch("");
   };
   return (
     <>
@@ -29,32 +34,71 @@ const Select_Project = () => {
             Select Project
           </h1>
 
-          {projects?.map((project) => (
-            <div
-              onClick={(e) => handleClick(project._id)}
-              className="flex justify-between items-center rounded border mb-2 border-slate-200 p-2 cursor-pointer hover:bg-slate-100 transition-all duration-200 group"
-              key={project._id}
-            >
-              <div className="flex justify-center flex-col gap-2">
-                <p className="text-slate-400">
-                  <span className="font-semibold text-black">
-                    Project Name:
-                  </span>
-                  {project.projectName}
-                </p>
-                <p className="text-purple-600 font-semibold">
-                  <span className="font-semibold text-black">
-                    {" "}
-                    Project Manager:
-                  </span>
-                  {project?.projectManager?.name}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaArrowRight className="transform text-xl text-purple-500 transition-transform group-hover:translate-x-2" />
-              </div>
-            </div>
-          ))}
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Project Name
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Project Manager
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Status
+                  </th>
+
+                  <th scope="col" className="px-6 py-3">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              {projects?.map((project) => (
+                <tbody key={project._id}>
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {project.projectName}
+                    </th>
+
+                    <td className="px-6 py-4">
+                      {project.projectManager?.name}
+                    </td>
+                    <td
+                      className={`px-6 py-4 ${
+                        project.projectStatus === "InProgress"
+                          ? "text-red-600"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {project.projectStatus}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => handleOnClick(project._id)}
+                          className="flex items-center gap-1 bg-purple-600 text-white p-1 rounded transition-all duration-200 hover:bg-transparent hover:text-purple-600 border border-purple-600"
+                        >
+                          View
+                          <FaEye />
+                        </button>
+                        <button
+                          onClick={(e) => handleDelete(project._id)}
+                          className="flex items-center border-red-600 border text-red-600 rounded hover:bg-red-600 hover:text-white transition-all duration-200 p-1"
+                        >
+                          Delete
+                          <MdDelete />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+            </table>
+          </div>
         </div>
       </section>
     </>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  deleteUser,
   getAllUsers,
   getSingleUser,
   getUnAssignedTeamMembers,
@@ -13,7 +12,6 @@ import {
 } from "../../store/slices/UserSlice";
 import { toast } from "react-toastify";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaArrowRight } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 const User_Details = () => {
@@ -32,6 +30,8 @@ const User_Details = () => {
   });
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -107,11 +107,6 @@ const User_Details = () => {
     dispatch(updateProfile({ id, userData: formData }));
   };
 
-  const handleDelete = () => {
-    dispatch(deleteUser(id));
-    navigate("/allusers");
-  };
-
   const handleOnClick = (id) => {
     navigate(`/userdetails/${id}`);
   };
@@ -120,6 +115,20 @@ const User_Details = () => {
   const handleDeleteTeammember = (teamMemberId) => {
     dispatch(removeTeamMember({ userId: userid, teamMemberId: teamMemberId }));
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   return (
     <section className="flex min-h-screen">
       <div>
@@ -199,7 +208,7 @@ const User_Details = () => {
                   <label className="text-slate-500" htmlFor="teamMembers">
                     Team Members:
                   </label>
-                  <div className="relative">
+                  <div className="relative" ref={dropdownRef}>
                     <button
                       type="button"
                       className="flex w-full items-center justify-between bg-slate-200 p-2 rounded border border-slate-300"
@@ -235,15 +244,9 @@ const User_Details = () => {
                 <div className="mt-4 w-full gap-2 flex">
                   <button
                     type="submit"
-                    className="bg-purple-600 w-1/2 hover:bg-purple-700 transition-all duration-200 p-2 text-white font-semibold rounded"
+                    className="bg-purple-600 w-full hover:bg-purple-700 transition-all duration-200 p-2 text-white font-semibold rounded"
                   >
                     Update
-                  </button>
-                  <button
-                    onClick={handleDelete}
-                    className="bg-red-600 w-1/2 hover:bg-red-700 transition-all duration-200 p-2 text-white font-semibold rounded"
-                  >
-                    Delete User
                   </button>
                 </div>
               </div>
@@ -263,7 +266,7 @@ const User_Details = () => {
 
               {profile?.managedTeamMembers.map((member) => (
                 <div
-                  className="flex justify-between items-center rounded border mb-2 border-slate-200 p-2 hover:bg-slate-100 transition-all duration-200 group"
+                  className="flex justify-between items-center rounded border mb-2 border-slate-200 p-2 hover:bg-slate-100 transition-all duration-200"
                   key={member._id}
                 >
                   <div className="flex items-center gap-2">
@@ -280,10 +283,10 @@ const User_Details = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={(e) => handleDeleteTeammember(member._id)}
-                      className=" bg-slate-200 hover:bg-white p-2"
+                      className="flex border border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded group p-2"
                     >
-                      {" "}
-                      <MdDelete className="transform text-2xl text-red-500" />
+                      Remove{" "}
+                      <MdDelete className="transform text-2xl text-red-500 group-hover:text-white" />
                     </button>
                   </div>
                 </div>

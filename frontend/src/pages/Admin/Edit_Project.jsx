@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProjectManagers } from "../../store/slices/UserSlice.jsx";
@@ -8,11 +8,12 @@ import {
 } from "../../store/slices/projectSlice.jsx";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Edit_Project = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { projectManagers } = useSelector((state) => state.users);
+  const { projectManagers, user } = useSelector((state) => state.users);
   const { message, error, projectDetails } = useSelector(
     (state) => state.projects
   );
@@ -57,8 +58,6 @@ const Edit_Project = () => {
     updatedFormData.append("projectName", formData.projectName);
     updatedFormData.append("description", formData.description);
     updatedFormData.append("projectManager", formData.projectManager);
-
-    console.log("Updated FormData:", updatedFormData);
 
     dispatch(updateProject({ id: id, updatedFormData: updatedFormData }));
   };
@@ -109,27 +108,30 @@ const Edit_Project = () => {
                 onChange={handleChange}
               ></textarea>
             </div>
-            <div>
-              <label className="text-slate-400" htmlFor="projectManager">
-                Select Project Manager <span className="text-red-600">*</span>
-              </label>
-              <select
-                className="w-full p-2 mt-1 rounded bg-slate-200"
-                name="projectManager"
-                id="projectManager"
-                required
-                value={formData.projectManager}
-                onChange={handleChange}
-              >
-                <option value="">Select Project Manager</option>
-                {projectManagers &&
-                  projectManagers.map((manager) => (
-                    <option key={manager._id} value={manager._id}>
-                      {manager.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+            {user?.role == "admin" && (
+              <div>
+                <label className="text-slate-400" htmlFor="projectManager">
+                  Select Project Manager <span className="text-red-600">*</span>
+                </label>
+                <select
+                  className="w-full p-2 mt-1 rounded bg-slate-200"
+                  name="projectManager"
+                  id="projectManager"
+                  required
+                  value={formData.projectManager}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Project Manager</option>
+                  {projectManagers &&
+                    projectManagers.map((manager) => (
+                      <option key={manager._id} value={manager._id}>
+                        {manager.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
+
             <button
               type="submit"
               className="bg-purple-600 p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"

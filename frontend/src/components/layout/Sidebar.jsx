@@ -13,52 +13,46 @@ const Sidebar = () => {
       {user?.role === "admin" && (
         <ul className="flex flex-col gap-4">
           <NavLink
-            className="flex  p-1 gap-2 items-center hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/createproject"}
           >
-            <MdOutlineCreateNewFolder className="text-4xl text-purple-600" />
-            <span className="hidden text-slate-400 md:block">
-              Create Project
-            </span>
+            <MdOutlineCreateNewFolder className="text-4xl " />
+            <span className="hidden  md:block">Create Project</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/allprojects"}
           >
-            <MdSpaceDashboard className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">
-              All Projects
-            </span>
+            <MdSpaceDashboard className="text-4xl" />
+            <span className="hidden   md:block">All Projects</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/createtask"}
           >
-            <IoMdAdd className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">Create Task</span>
+            <IoMdAdd className="text-4xl " />
+            <span className="hidden   md:block">Create Task</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-3 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/alltasks"}
           >
-            <BsListTask className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">All Tasks</span>
+            <BsListTask className="text-4xl " />
+            <span className="hidden   md:block">All Tasks</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/createsubtask"}
           >
-            <IoMdAddCircle className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">
-              Create Sub Task
-            </span>
+            <IoMdAddCircle className="text-4xl" />
+            <span className="hidden  md:block">Create Sub Task</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/allusers"}
           >
-            <FaUsers className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">All Users</span>
+            <FaUsers className="text-4xl " />
+            <span className="hidden   md:block">All Users</span>
           </NavLink>
         </ul>
       )}
@@ -66,36 +60,32 @@ const Sidebar = () => {
       {user?.role === "project_manager" && (
         <ul className="flex flex-col gap-4">
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/allprojects"}
           >
-            <MdSpaceDashboard className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">
-              All Projects
-            </span>
+            <MdSpaceDashboard className="text-4xl" />
+            <span className="hidden md:block">All Projects</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/createtask"}
           >
-            <IoMdAdd className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">Create Task</span>
+            <IoMdAdd className="text-4xl" />
+            <span className="hidden md:block">Create Task</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-3 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/alltasks"}
           >
-            <BsListTask className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">All Tasks</span>
+            <BsListTask className="text-4xl" />
+            <span className="hidden md:block">All Tasks</span>
           </NavLink>
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
             to={"/createsubtask"}
           >
-            <IoMdAddCircle className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">
-              Create Sub Task
-            </span>
+            <IoMdAddCircle className="text-4xl" />
+            <span className="hidden md:block">Create Sub Task</span>
           </NavLink>
         </ul>
       )}
@@ -103,21 +93,19 @@ const Sidebar = () => {
       {user?.role === "team_member" && (
         <ul className="flex flex-col gap-4">
           <NavLink
-            className="flex p-1 gap-2 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
+            to={"/allprojects"}
           >
-            <MdSpaceDashboard className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">
-              All Projects
-            </span>
+            <MdSpaceDashboard className="text-4xl" />
+            <span className="hidden md:block">All Projects</span>
           </NavLink>
 
           <NavLink
-            className="flex p-1 gap-3 items-center  hover:bg-slate-200 transition duration-200"
-            to={""}
+            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-purple-200 [&.active]:font-bold hover:bg-purple-200 transition duration-200`}
+            to={"/alltasks"}
           >
-            <BsListTask className="text-4xl text-purple-600" />
-            <span className="hidden  text-slate-400 md:block">All Tasks</span>
+            <BsListTask className="text-4xl" />
+            <span className="hidden md:block">All Tasks</span>
           </NavLink>
         </ul>
       )}

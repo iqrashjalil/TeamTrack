@@ -80,7 +80,7 @@ const Navbar = () => {
               <ul className="flex flex-col justify-center items-center h-full gap-10">
                 <li>
                   <NavLink
-                    className="font-semibold hover:text-purple-500 transition duration-150"
+                    className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                     to="/"
                     onClick={toggleNavbar}
                   >
@@ -89,7 +89,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <NavLink
-                    className="font-semibold active:text-purple-500 hover:text-purple-500 transition duration-150"
+                    className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                     to="/alltasks"
                     onClick={toggleNavbar}
                   >
@@ -102,13 +102,13 @@ const Navbar = () => {
                   ) : (
                     <>
                       <NavLink
-                        className="bg-white p-1 rounded border-2 border-purple-500 text-purple-500 transition duration-150 hover:text-white hover:bg-purple-600 font-semibold"
+                        className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                         to="/login"
                       >
                         Login
                       </NavLink>
                       <NavLink
-                        className="bg-purple-500 p-1 rounded border-2 border-purple-500 text-white transition duration-150 hover:bg-purple-600 font-semibold"
+                        className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                         to="/register"
                       >
                         SignUp
@@ -126,7 +126,7 @@ const Navbar = () => {
           <ul className="flex items-center  gap-10">
             <li>
               <NavLink
-                className="font-semibold hover:text-purple-500 transition duration-150"
+                className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                 to="/"
               >
                 Home
@@ -134,7 +134,7 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                className="font-semibold active:text-purple-500 hover:text-purple-500 transition duration-150"
+                className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                 to="/alltasks"
               >
                 Tasks

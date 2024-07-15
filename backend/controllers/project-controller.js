@@ -37,6 +37,30 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     .json({ success: true, message: "Project Updated Successfully" });
 });
 
+//* Add New Member In the project
+
+const addMember = catchAsyncError(async (req, res, next) => {
+  const { projectId, teamMemberId } = req.params;
+
+  const project = await Project.findById(projectId);
+
+  if (!project) {
+    return next(new ErrorHandler("Project Not Found", 404));
+  }
+
+  // Check if the member is already in the members array
+  if (project.members.includes(teamMemberId)) {
+    return next(new ErrorHandler("Member Is Already Part Of The Project", 404));
+  }
+
+  // Add the new member to the members array
+  project.members.push(teamMemberId);
+
+  // Save the updated project
+  await project.save();
+
+  res.status(200).json({ success: true, message: "Member added successfully" });
+});
 //* Delete Project
 
 const deleteProject = catchAsyncError(async (req, res, next) => {
@@ -115,6 +139,35 @@ const getUserProjects = catchAsyncError(async (req, res, next) => {
     projects: projects,
   });
 });
+
+//* Remove Team Member From Project
+const removeMemberFromProject = catchAsyncError(async (req, res, next) => {
+  const { projectId, teamMemberId } = req.params;
+
+  const project = await Project.findById(projectId);
+
+  if (!project) {
+    res.status(404);
+    throw new Error("project not found");
+  }
+
+  const memberIndex = project.members.indexOf(teamMemberId);
+  if (memberIndex === -1) {
+    res.status(404);
+    throw new Error("Team member not found");
+  }
+
+  // Remove the team member
+  project.members.splice(memberIndex, 1);
+
+  // Save the updated user document
+  await project.save();
+
+  res
+    .status(200)
+    .json({ success: true, message: "Team member removed successfully" });
+});
+
 export default {
   createProject,
   updateProject,
@@ -122,4 +175,6 @@ export default {
   getAllProjects,
   getProject,
   getUserProjects,
+  removeMemberFromProject,
+  addMember,
 };
