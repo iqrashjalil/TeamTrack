@@ -8,6 +8,7 @@ import { logout } from "../../store/slices/UserSlice";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { IoPersonSharp } from "react-icons/io5";
 import { IoMdExit } from "react-icons/io";
+import { MdDashboard } from "react-icons/md";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,15 @@ const Navbar = () => {
           {isDropdownOpen ? (
             <div className="absolute top-14 bg-slate-100 right-20 md:right-8 rounded">
               <ul>
+                <li
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-2 p-2 m-1 rounded transition-all hover:text-purple-500 duration-200 hover:bg-slate-100"
+                >
+                  <MdDashboard />
+                  <NavLink to={"/allprojects"} className="text-slate-500">
+                    Dashboard
+                  </NavLink>
+                </li>
                 <li
                   onClick={toggleDropdown}
                   className="flex items-center gap-2 p-2 m-1 rounded transition-all hover:text-purple-500 duration-200 hover:bg-slate-100"
@@ -152,7 +162,7 @@ const Navbar = () => {
                       src={user?.profilePicture}
                       alt=""
                     />
-                    <BiSolidDownArrow className="text-1xl text-slate-200" />
+                    <BiSolidDownArrow className="text-1xl text-slate-600" />
                   </div>
                 </>
               ) : (

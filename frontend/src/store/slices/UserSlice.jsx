@@ -74,20 +74,27 @@ export const login = createAsyncThunk(
 
 //* Load User Thunk
 
-export const loadUser = createAsyncThunk("user/loaduser", async () => {
-  try {
-    const { data } = await axios.get(`${serverUrl}/api/auth/getuser`, {
-      withCredentials: true,
-    });
-    return data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      "An unknown error occurred";
-    return rejectWithValue(message);
+export const loadUser = createAsyncThunk(
+  "user/loaduser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${serverUrl}/api/auth/getuser`, {
+        withCredentials: true,
+      });
+
+      localStorage.setItem("user", JSON.stringify(data));
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
   }
-});
+);
 
 //* Logout Thunk
 
@@ -325,7 +332,7 @@ const userSlice = createSlice({
       .addCase(loadUser.pending, (state, action) => {
         state.loading = true;
         state.error = null;
-        state.isAuthenticated = true;
+        state.isAuthenticated = false;
       })
       .addCase(loadUser.fulfilled, (state, action) => {
         state.loading = false;
