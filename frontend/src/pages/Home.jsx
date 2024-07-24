@@ -7,6 +7,10 @@ import { MdSpatialTracking, MdOutlineDynamicForm } from "react-icons/md";
 import { FaUnlockAlt, FaTasks } from "react-icons/fa";
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { IoNotificationsSharp } from "react-icons/io5";
+import usmanasif from "../images/usmanasif.jpg";
+import asifpeer from "../images/asifpeer.webp";
+import bilal from "../images/bilal.jpg";
+import salimghauri from "../images/salimghauri.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,8 +21,8 @@ const Home = () => {
       <section className="p-2">
         <div className="flex flex-col lg:h-[93vh] w-full lg:flex-row lg:justify-center items-center ">
           <div className="h-max lg:w-1/2 lg:pl-28">
-            <h1 className="text-4xl md:text-8xl font-poppins drop-shadow-md text-purple-600 font-extrabold">
-              <span className="text-slate-700 md:text-7xl">
+            <h1 className="text-4xl xl:text-7xl 2xl:text-8xl md:text-8xl lg:text-7xl font-poppins drop-shadow-md text-purple-600 font-extrabold">
+              <span className="text-slate-700 xl:text-6xl 2xl:text-7xl md:text-7xl lg:text-6xl">
                 Project Management Tool
               </span>{" "}
               TeamTrack
@@ -156,7 +160,12 @@ const Home = () => {
                 >
                   View Portfolio
                 </button>
-                <button className="p-4 w-36 border-2 bg-purple-600 border-purple-600 rounded-full font-semibold hover:bg-purple-700 text-white transition-all duration-200">
+                <button
+                  onClick={(e) =>
+                    (window.location.href = "mailto:iqrashjalil@gmail.com")
+                  }
+                  className="p-4 w-36 border-2 bg-purple-600 border-purple-600 rounded-full font-semibold hover:bg-purple-700 text-white transition-all duration-200"
+                >
                   Email Me
                 </button>
               </div>
@@ -199,11 +208,103 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="bg-slate-100">sadasdas</div>
+        <div className="bg-slate-100">
+          <div className="flex justify-center">
+            <h1 className=" mb-4 relative w-fit font-bold text-4xl text-slate-500 pb-1">
+              <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
+              Testimonials
+            </h1>
+          </div>
+          <div className="flex flex-col md:flex-row  md:justify-center md:flex-wrap gap-4 p-2">
+            <div className="flex gap-4 bg-white border md:w-[25rem] border-slate-100 rounded p-4">
+              <div className="">
+                <img className="rounded-lg w-[500px] " src={asifpeer} alt="" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  "As the CEO of Systems Limited, I am always on the lookout for
+                  tools that can enhance our project management processes.
+                  TeamTrack has exceeded our expectations with its dynamic team
+                  assignments and real-time notifications. It has streamlined
+                  our operations, improved collaboration, and significantly
+                  boosted our productivity."
+                </p>
+                <div className="mt-10">
+                  <p className="font-semibold">Asif Peer</p>
+                  <p className="text-slate-400">CEO Systems Limited</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-4 bg-white border md:w-[25rem] border-slate-100 rounded p-4">
+              <div className="">
+                <img className="rounded-lg w-[500px]" src={usmanasif} alt="" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  "TeamTrack has been a game-changer for Devsinc. Its intuitive
+                  interface and powerful features have streamlined our project
+                  management processes, making it easier for our teams to
+                  collaborate and stay on top of their tasks. The real-time
+                  notifications and dynamic team assignments have significantly
+                  improved our efficiency and productivity."
+                </p>
+                <div className="mt-10">
+                  <p className="font-semibold">Usman Asif</p>
+                  <p className="text-slate-400">Founder & CEO Devsinc</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-4 bg-white border md:w-[25rem] border-slate-100 rounded p-4">
+              <div className="">
+                <img className="rounded-lg w-[500px]" src={bilal} alt="" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  "Using TeamTrack has been a game-changer for Contour Software.
+                  The seamless integration of task management and team
+                  collaboration features has made it easier for us to stay
+                  organized and deliver projects on time. TeamTrack is an
+                  essential tool for any company aiming to enhance their project
+                  management capabilities."
+                </p>
+                <div className="mt-10">
+                  <p className="font-semibold">Bilal Mehmood</p>
+                  <p className="text-slate-400">MD Contour Software</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-4 bg-white border md:w-[25rem] border-slate-100 rounded p-4">
+              <div className="">
+                <img
+                  className="rounded-lg w-[500px]"
+                  src={salimghauri}
+                  alt=""
+                />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  "TeamTrack has revolutionized our approach to project
+                  management at NetSol Technologies. The ability to dynamically
+                  assign team members and receive real-time updates has greatly
+                  improved our operational efficiency. I highly recommend
+                  TeamTrack to any organization looking to optimize their
+                  project management processes."
+                </p>
+                <div className="mt-10">
+                  <p className="font-semibold">Salim Ghauri</p>
+                  <p className="text-slate-400">
+                    {" "}
+                    Founder & CEO, NetSol Technologies
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div class="absolute top-0 -z-10 h-full w-full bg-white">
-        <div class="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] opacity-50 blur-[80px]"></div>
+      <div className="absolute top-0 -z-10 h-full w-full bg-white">
+        <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] opacity-50 blur-[80px]"></div>
       </div>
     </>
   );

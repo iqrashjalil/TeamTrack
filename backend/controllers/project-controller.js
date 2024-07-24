@@ -1,17 +1,27 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import Project from "../models/project-model.js";
 import Task from "../models/task-model.js";
+import User from "../models/user-model.js";
 import { ErrorHandler } from "../utils/error-handler.js";
 
 //* Create project
 const createProject = catchAsyncError(async (req, res, next) => {
   const { projectName, description, projectManager } = req.body;
+  const manager = await User.findById(projectManager).populate(
+    "managedTeamMembers"
+  );
 
+  if (!manager) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Project Manager not found" });
+  }
   const project = new Project({
     projectName,
     description,
     createdBy: req.user._id,
     projectManager,
+    members: manager.managedTeamMembers,
   });
 
   await project.save();

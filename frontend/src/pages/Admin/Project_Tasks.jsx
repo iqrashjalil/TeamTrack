@@ -2,14 +2,15 @@ import React, { useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { projectTasks } from "../../store/slices/Task_Slice";
-import { useParams } from "react-router-dom";
-import { FaArrowRight, FaEdit } from "react-icons/fa";
+import { NavLink, useParams } from "react-router-dom";
+import { FaArrowRight, FaEdit, FaEye } from "react-icons/fa";
 import { MdDelete, MdOutlineDoNotDisturb } from "react-icons/md";
 
 const Project_Tasks = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { allTasks } = useSelector((state) => state.tasks);
+  const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(projectTasks(id));
@@ -80,10 +81,20 @@ const Project_Tasks = () => {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex gap-2">
-                            <button className="flex items-center gap-1 bg-purple-600 text-white p-1 rounded transition-all duration-200 hover:bg-transparent hover:text-purple-600 border border-purple-600">
-                              Edit
-                              <FaEdit />
-                            </button>
+                            {user?.role == "team_member" ? (
+                              <NavLink
+                                to={`/taskdetail/${task._id}`}
+                                className="flex items-center gap-1 bg-purple-600 text-white p-1 rounded transition-all duration-200 hover:bg-transparent hover:text-purple-600 border border-purple-600"
+                              >
+                                View
+                                <FaEye />
+                              </NavLink>
+                            ) : (
+                              <button className="flex items-center gap-1 bg-purple-600 text-white p-1 rounded transition-all duration-200 hover:bg-transparent hover:text-purple-600 border border-purple-600">
+                                Edit
+                                <FaEdit />
+                              </button>
+                            )}
                             <button className="flex items-center border-red-600 border text-red-600 rounded hover:bg-red-600 hover:text-white transition-all duration-200 p-1">
                               Delete
                               <MdDelete />

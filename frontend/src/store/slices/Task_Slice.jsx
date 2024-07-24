@@ -67,6 +67,33 @@ export const createTask = createAsyncThunk(
   }
 );
 
+//* Get Task Details
+
+export const getTaskDetail = createAsyncThunk(
+  "task/getTaskDetail",
+  async (id, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+
+      const { data } = await axios.get(
+        `${serverUrl}/api/task/gettask/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -100,6 +127,19 @@ const taskSlice = createSlice({
         state.success = action.payload.success;
       })
       .addCase(createTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Get Task Details Cases
+      .addCase(getTaskDetail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTaskDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.taskDetail = action.payload.Task;
+      })
+      .addCase(getTaskDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

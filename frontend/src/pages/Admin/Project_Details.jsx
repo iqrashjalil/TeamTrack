@@ -122,7 +122,7 @@ const Project_Details = () => {
             {projectDetails?.members.length > 0 && (
               <div className="border rounded border-slate-200 p-2">
                 <h1 className="font-bold text-lg text-slate-700">
-                  Team Members
+                  Project Team Members
                 </h1>
 
                 {projectDetails &&
@@ -142,9 +142,15 @@ const Project_Details = () => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <button onClick={(e) => handleMemberRemove(member._id)}>
-                          <MdDeleteForever className="text-red-600 text-2xl" />
-                        </button>
+                        {user?.role == "team_member" ? (
+                          ""
+                        ) : (
+                          <button
+                            onClick={(e) => handleMemberRemove(member._id)}
+                          >
+                            <MdDeleteForever className="text-red-600 text-2xl" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))}

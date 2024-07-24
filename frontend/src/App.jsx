@@ -18,6 +18,8 @@ import Create_Task from "./pages/Admin/Create_Task.jsx";
 import Create_Subtask from "./pages/Admin/Create_Subtask.jsx";
 import User_Details from "./pages/Admin/User_Details.jsx";
 import Home from "./pages/Home.jsx";
+import Profile_Details from "./pages/Profile_Details.jsx";
+import Task_Details from "./pages/Admin/Task_Details.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ function App() {
           <Route path="/createtask" element={<Create_Task />} />
           <Route path="/createsubtask" element={<Create_Subtask />} />
           <Route path="/userdetails/:id" element={<User_Details />} />
+          <Route path="/profiledetails" element={<Profile_Details />} />
+          <Route path="/taskdetail/:id" element={<Task_Details />} />
         </Routes>
         <Footer />
       </Router>

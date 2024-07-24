@@ -112,6 +112,7 @@ const Create_Task = () => {
                   {user &&
                     user.managedTeamMembers.map((member) => (
                       <option key={member._id} value={member._id}>
+                        {console.log(member._id)}
                         {member.name}
                       </option>
                     ))}

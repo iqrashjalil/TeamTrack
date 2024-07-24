@@ -29,7 +29,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <header className="flex justify-between items-center bg-slate-100 h-12 px-4">
+      <header className="flex relative justify-between items-center bg-slate-100 h-12 px-4">
         <div className="flex-shrink-0 flex-grow-0">
           <img className="w-8" src={logo} alt="" />
         </div>
@@ -46,7 +46,7 @@ const Navbar = () => {
             <BiSolidDownArrow className="text-1xl text-slate-200" />
           </div>
           {isDropdownOpen ? (
-            <div className="absolute top-14 bg-slate-100 right-20 md:right-8 rounded">
+            <div className="absolute z-50 top-14 bg-slate-100 right-20 md:right-8 rounded">
               <ul>
                 <li
                   onClick={toggleDropdown}
@@ -62,7 +62,9 @@ const Navbar = () => {
                   className="flex items-center gap-2 p-2 m-1 rounded transition-all hover:text-purple-500 duration-200 hover:bg-slate-100"
                 >
                   <IoPersonSharp />
-                  <NavLink className="text-slate-500">Edit Profile</NavLink>
+                  <NavLink to={"/profiledetails"} className="text-slate-500">
+                    Edit Profile
+                  </NavLink>
                 </li>
                 <hr />
                 <li
@@ -103,7 +105,25 @@ const Navbar = () => {
                     to="/alltasks"
                     onClick={toggleNavbar}
                   >
-                    Tasks
+                    Features
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
+                    to="/alltasks"
+                    onClick={toggleNavbar}
+                  >
+                    Contact
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
+                    to="/alltasks"
+                    onClick={toggleNavbar}
+                  >
+                    Testimonials
                   </NavLink>
                 </li>
                 <li className="flex gap-2">
@@ -147,7 +167,23 @@ const Navbar = () => {
                 className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
                 to="/alltasks"
               >
-                Tasks
+                Features
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
+                to="/alltasks"
+              >
+                Contact
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={`font-semibold [&.active]:text-purple-500 hover:text-purple-500 transition duration-150`}
+                to="/alltasks"
+              >
+                Testimonials
               </NavLink>
             </li>
             <li className="flex gap-2">

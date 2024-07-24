@@ -16,8 +16,9 @@ const All_Users = () => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
-  const handleDelete = () => {
+  const handleDelete = (id) => {
     dispatch(deleteUser(id));
+    dispatch(getAllUsers());
   };
 
   const handleOnClick = (id) => {

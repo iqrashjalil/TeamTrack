@@ -407,7 +407,6 @@ const userSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.success = action.payload.success;
-        state.message = action.payload.message;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
