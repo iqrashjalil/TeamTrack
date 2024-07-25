@@ -142,7 +142,7 @@ const Project_Details = () => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        {user?.role == "team_member" ? (
+                        {user?.role === "team_member" ? (
                           ""
                         ) : (
                           <button
@@ -154,7 +154,7 @@ const Project_Details = () => {
                       </div>
                     </div>
                   ))}
-                {user?.role == "project_manager" && (
+                {user?.role === "project_manager" && (
                   <div className="flex flex-col">
                     <label htmlFor="add-member-select">Add Team Members:</label>
                     <div className="flex gap-2">
@@ -189,19 +189,20 @@ const Project_Details = () => {
                 <h1 className="font-bold text-lg text-slate-700">Tasks</h1>
                 {projectDetails &&
                   projectDetails.task.map((task) => (
-                    <div
+                    <NavLink
+                      to={`/taskdetail/${task._id}`}
                       key={task._id}
                       className="flex p-2 mb-4 items-center justify-between border rounded cursor-pointer border-slate-200 group text-slate-400 hover:bg-slate-100 hover:text-black hover:font-semibold"
                     >
                       <p className="text-sm">{task.title}</p>
 
                       <FaArrowRight className="transform text-purple-500 transition-transform group-hover:translate-x-2" />
-                    </div>
+                    </NavLink>
                   ))}
               </div>
             )}
 
-            {(user?.role == "admin" || user?.role == "project_manager") && (
+            {(user?.role === "admin" || user?.role === "project_manager") && (
               <div className="mt-4 w-full flex justify-center gap-1 md:gap-4">
                 <NavLink
                   className="w-1/2 bg-purple-500 flex justify-center items-center text-white font-semibold py-2 px-4 rounded hover:bg-purple-600 transition-all duration-200"
@@ -209,7 +210,7 @@ const Project_Details = () => {
                 >
                   Edit Project
                 </NavLink>
-                {user?.role == "admin" && (
+                {user?.role === "admin" && (
                   <button
                     onClick={() => {
                       dispatch(deleteProject(id));

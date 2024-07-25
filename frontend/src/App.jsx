@@ -20,6 +20,7 @@ import User_Details from "./pages/Admin/User_Details.jsx";
 import Home from "./pages/Home.jsx";
 import Profile_Details from "./pages/Profile_Details.jsx";
 import Task_Details from "./pages/Admin/Task_Details.jsx";
+import Edit_Task from "./pages/Admin/Edit_Task.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
           <Route path="/userdetails/:id" element={<User_Details />} />
           <Route path="/profiledetails" element={<Profile_Details />} />
           <Route path="/taskdetail/:id" element={<Task_Details />} />
+          <Route path="/edittask/:id" element={<Edit_Task />} />
         </Routes>
         <Footer />
       </Router>

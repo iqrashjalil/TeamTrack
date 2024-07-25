@@ -1,15 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProjects } from "../../store/slices/projectSlice";
-import { createTask, resetSuccess } from "../../store/slices/Task_Slice";
+import {
+  createTask,
+  getTaskDetail,
+  resetSuccess,
+  updateTask,
+} from "../../store/slices/Task_Slice";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
-const Create_Task = () => {
+const Edit_Task = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
-  const { userProjects } = useSelector((state) => state.projects);
-  const { error, success } = useSelector((state) => state.tasks);
+  const { taskDetail, error, success } = useSelector((state) => state.tasks);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    projectId: "",
+    assignedTo: "",
+    dueDate: "",
+  });
 
   useEffect(() => {
     dispatch(getUserProjects());
@@ -20,21 +33,44 @@ const Create_Task = () => {
       toast.error(error);
     }
     if (success) {
-      toast.success("Task created successfully!");
+      toast.success("Task Updated Successfully!");
       dispatch(resetSuccess());
     }
-  }, [success, error]);
+    dispatch(getTaskDetail(id));
+  }, [dispatch, success, error]);
+
+  useEffect(() => {
+    if (taskDetail) {
+      setFormData({
+        title: taskDetail?.title || "",
+        description: taskDetail?.description || "",
+        projectId: taskDetail?.projectId || "",
+        assignedTo: taskDetail?.assignedTo?._id || "",
+        dueDate: taskDetail?.dueDate
+          ? new Date(taskDetail?.dueDate).toISOString().split("T")[0]
+          : "",
+      });
+    }
+  }, [taskDetail]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
+    const updatedFormData = new FormData();
 
-    formData.append("title", e.target.title.value);
-    formData.append("description", e.target.description.value);
-    formData.append("projectId", e.target.projectId.value);
-    formData.append("assignedTo", e.target.assignedTo.value);
-    formData.append("dueDate", e.target.dueDate.value);
+    updatedFormData.append("title", formData.title);
+    updatedFormData.append("description", formData.description);
+    updatedFormData.append("projectId", formData.projectId);
+    updatedFormData.append("assignedTo", formData.assignedTo);
+    updatedFormData.append("dueDate", formData.dueDate);
 
-    dispatch(createTask(formData));
+    dispatch(updateTask({ id: id, formData: updatedFormData }));
   };
 
   return (
@@ -47,7 +83,7 @@ const Create_Task = () => {
           <div className="p-4 w-full flex flex-col items-center">
             <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
               <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
-              Create Task
+              Edit Task
             </h1>
             <hr className="mt-2" />
             <form
@@ -60,9 +96,12 @@ const Create_Task = () => {
                 </label>
                 <input
                   id="title"
+                  name="title"
                   className="w-full p-2 mt-1 rounded bg-slate-200"
                   type="text"
                   placeholder="Enter Task Title"
+                  value={formData.title}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -76,28 +115,12 @@ const Create_Task = () => {
                   id="description"
                   placeholder="Enter Task Description"
                   rows="10"
+                  value={formData.description}
+                  onChange={handleChange}
                   required
                 ></textarea>
               </div>
-              <div>
-                <label className="text-slate-400" htmlFor="projectId">
-                  Select Project<span className="text-red-600">*</span>
-                </label>
-                <select
-                  className="w-full p-2 mt-1 rounded bg-slate-200"
-                  name="projectId"
-                  id="projectId"
-                  required
-                >
-                  <option value="">Select Project</option>
-                  {userProjects &&
-                    userProjects.map((userProject) => (
-                      <option key={userProject._id} value={userProject?._id}>
-                        {userProject.projectName}
-                      </option>
-                    ))}
-                </select>
-              </div>
+
               <div>
                 <label className="text-slate-400" htmlFor="assignedTo">
                   Assigned To<span className="text-red-600">*</span>
@@ -106,6 +129,8 @@ const Create_Task = () => {
                   className="w-full p-2 mt-1 rounded bg-slate-200"
                   name="assignedTo"
                   id="assignedTo"
+                  value={formData.assignedTo}
+                  onChange={handleChange}
                   required
                 >
                   <option value="">Select Team Member</option>
@@ -126,6 +151,8 @@ const Create_Task = () => {
                   id="dueDate"
                   name="dueDate"
                   className="w-full p-2 mt-1 rounded bg-slate-200"
+                  value={formData.dueDate}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -133,8 +160,7 @@ const Create_Task = () => {
                 type="submit"
                 className="bg-purple-600 rounded p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
               >
-                {" "}
-                Create Task
+                Update Task
               </button>
             </form>
           </div>
@@ -144,4 +170,4 @@ const Create_Task = () => {
   );
 };
 
-export default Create_Task;
+export default Edit_Task;

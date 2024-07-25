@@ -8,9 +8,7 @@ const router = express.Router();
 router
   .route("/createtask")
   .post(authMiddleware, isProjectManger, taskController.createTask);
-router
-  .route("/updatetask/:id")
-  .put(authMiddleware, isProjectManger, taskController.updateTask);
+router.route("/updatetask/:id").put(authMiddleware, taskController.updateTask);
 router
   .route("/deletetask/:id")
   .delete(authMiddleware, isProjectManger, taskController.deleteTask);

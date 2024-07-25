@@ -94,6 +94,37 @@ export const getTaskDetail = createAsyncThunk(
   }
 );
 
+//* Update Task
+
+export const updateTask = createAsyncThunk(
+  "task/updateTask",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      const { data } = await axios.put(
+        `${serverUrl}/api/task/updatetask/${id}`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -140,6 +171,19 @@ const taskSlice = createSlice({
         state.taskDetail = action.payload.Task;
       })
       .addCase(getTaskDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Update Task Cases
+      .addCase(updateTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+      })
+      .addCase(updateTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
