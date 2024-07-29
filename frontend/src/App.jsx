@@ -21,6 +21,9 @@ import Home from "./pages/Home.jsx";
 import Profile_Details from "./pages/Profile_Details.jsx";
 import Task_Details from "./pages/Admin/Task_Details.jsx";
 import Edit_Task from "./pages/Admin/Edit_Task.jsx";
+import Subtask_Detail from "./pages/Admin/Subtask_Detail.jsx";
+import Edit_Subtask from "./pages/Admin/Edit_Subtask.jsx";
+import Protected_Route from "./Protected_Route.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +36,15 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/allprojects" element={<All_Projects />} />
+          <Route
+            path="/allprojects"
+            element={
+              <Protected_Route
+                role={"project_manager"}
+                Component={All_Projects}
+              />
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createproject" element={<Create_Project />} />
@@ -48,6 +59,13 @@ function App() {
           <Route path="/profiledetails" element={<Profile_Details />} />
           <Route path="/taskdetail/:id" element={<Task_Details />} />
           <Route path="/edittask/:id" element={<Edit_Task />} />
+          <Route path="/subtask/:id" element={<Subtask_Detail />} />
+          <Route
+            path="/editsubtask/:id"
+            element={
+              <Protected_Route role={"admin"} Component={Edit_Subtask} />
+            }
+          />
         </Routes>
         <Footer />
       </Router>

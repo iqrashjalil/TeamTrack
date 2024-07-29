@@ -1,45 +1,46 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/layout/Sidebar";
+import Sidebar from "../../components/layout/Sidebar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getTaskDetail,
+  getSubtaskDetail,
   resetSuccess,
-  updateTask,
-} from "../../store/slices/Task_Slice.jsx";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
+  updateSubtask,
+} from "../../store/slices/SubTask_Slice.jsx";
+import { NavLink, useParams } from "react-router-dom";
+
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader.jsx";
 
-const Task_Details = () => {
-  const navigate = useNavigate();
+const Subtask_Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { taskDetail, loading, error, success } = useSelector(
-    (state) => state.tasks
+  const { subtaskDetail, loading, error, success } = useSelector(
+    (state) => state.subTasks
   );
   const { user } = useSelector((state) => state.users);
   const [status, setStatus] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const formattedDate = taskDetail?.dueDate
-    ? new Date(taskDetail.dueDate).toLocaleDateString("en-US", {
+  const formattedDate = subtaskDetail?.dueDate
+    ? new Date(subtaskDetail.dueDate).toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",
       })
     : "";
   const currentDate = new Date();
-  const dueDate = taskDetail?.dueDate ? new Date(taskDetail.dueDate) : null;
+  const dueDate = subtaskDetail?.dueDate
+    ? new Date(subtaskDetail.dueDate)
+    : null;
   const timeDifference = dueDate
     ? Math.ceil((dueDate - currentDate) / (1000 * 60 * 60 * 24))
     : null;
   useEffect(() => {
-    if (taskDetail) {
-      setStatus(taskDetail.status);
+    if (subtaskDetail) {
+      setStatus(subtaskDetail.status);
     }
-  }, [taskDetail]);
+  }, [subtaskDetail]);
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -48,7 +49,7 @@ const Task_Details = () => {
       toast.success("Status Updated Successfully!");
       dispatch(resetSuccess());
     }
-    dispatch(getTaskDetail(id));
+    dispatch(getSubtaskDetail(id));
   }, [dispatch, error, success]);
 
   return (
@@ -64,25 +65,25 @@ const Task_Details = () => {
             <div className="lg:w-1/2 p-2">
               <h1 className="mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
                 <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
-                Task Details
+                Sub-Task Details
               </h1>
               <h1 className="font-semibold text-slate-700">
-                {taskDetail?.title}
+                {subtaskDetail?.title}
               </h1>
               <p className="text-sm mt-4 text-slate-400">
-                {taskDetail?.description}
+                {subtaskDetail?.description}
               </p>
               <div className="sm:flex gap-4">
                 <p className="text-slate-400 mt-4">
                   Status:{" "}
                   <span
                     className={`${
-                      taskDetail?.status == "Completed"
+                      subtaskDetail?.status == "Completed"
                         ? "text-green-400"
                         : "text-red-600"
                     } font-semibold text-sm shadow-sm px-2 bg-slate-100 p-1 rounded-full`}
                   >
-                    {taskDetail?.status}
+                    {subtaskDetail?.status}
                   </span>
                 </p>
 
@@ -101,26 +102,6 @@ const Task_Details = () => {
             <hr className="mt-4 mx-20 lg:hidden" />
             <div className="h-full w-[2px] hidden lg:block bg-slate-200"></div>
             <div className="lg:w-1/2">
-              {taskDetail?.subtasks.length > 0 && (
-                <div className="border rounded  border-purple-200 mt-4 mx-2 p-2">
-                  <h1 className="font-bold text-lg text-slate-700">
-                    Sub-Tasks
-                  </h1>
-                  {taskDetail &&
-                    taskDetail.subtasks.map((subtask) => (
-                      <div
-                        onClick={(e) => navigate(`/subtask/${subtask._id}`)}
-                        key={subtask._id}
-                        className="flex p-2 mb-4 items-center justify-between border rounded cursor-pointer border-slate-200 group text-slate-400 hover:bg-slate-100 hover:text-black hover:font-semibold"
-                      >
-                        <p className="text-sm">{subtask.title}</p>
-
-                        <FaArrowRight className="transform text-purple-500 transition-transform group-hover:translate-x-2" />
-                      </div>
-                    ))}
-                </div>
-              )}
-
               <div className="p-2 flex flex-col">
                 <label className="text-slate-400" htmlFor="status">
                   Update Status:
@@ -140,8 +121,8 @@ const Task_Details = () => {
                   <button
                     onClick={() =>
                       dispatch(
-                        updateTask({
-                          id: taskDetail?._id,
+                        updateSubtask({
+                          id: subtaskDetail?._id,
                           formData: { status: status },
                         })
                       )
@@ -152,22 +133,11 @@ const Task_Details = () => {
                   </button>
                 </div>
               </div>
-              <div className="p-2">
-                <h1 className="text-slate-400">
-                  {taskDetail?.assignedTo?.name == user?.name ? (
-                    <span className="text-black font-semibold">You are</span>
-                  ) : (
-                    <span className="text-black font-semibold">
-                      {taskDetail?.assignedTo?.name}
-                    </span>
-                  )}{" "}
-                  Working on this Task
-                </h1>
-              </div>
+
               {(user?.role == "admin" || user?.role == "project_manager") && (
                 <div className="flex p-2 w-full gap-[2%]">
                   <NavLink
-                    to={`/edittask/${id}`}
+                    to={`/editsubtask/${id}`}
                     className="p-2 flex justify-center items-center bg-purple-600 text-white font-semibold w-[49%] rounded hover:bg-purple-700 transition-all duration-200"
                   >
                     Edit Task
@@ -229,7 +199,7 @@ const Task_Details = () => {
                             </svg>
                             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                               Are you sure you want to delete{" "}
-                              {taskDetail?.title}
+                              {subtaskDetail?.title}
                             </h3>
                             <button
                               // onClick={(e) => handleDelete()}
@@ -285,4 +255,4 @@ const Task_Details = () => {
   );
 };
 
-export default Task_Details;
+export default Subtask_Detail;

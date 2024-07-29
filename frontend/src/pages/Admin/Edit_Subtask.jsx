@@ -1,57 +1,76 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProjects } from "../../store/slices/projectSlice";
-import { projectTasks } from "../../store/slices/Task_Slice";
 import { toast } from "react-toastify";
-import { createSubTask, resetSuccess } from "../../store/slices/SubTask_Slice";
+import { useParams } from "react-router-dom";
+import {
+  getSubtaskDetail,
+  resetSuccess,
+  updateSubtask,
+} from "../../store/slices/SubTask_Slice";
 import Loader from "../../components/loader/Loader";
 
-const Create_Subtask = () => {
+const Edit_Subtask = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const { loading: projectLoading, userProjects } = useSelector(
-    (state) => state.projects
+  const { loading, subtaskDetail, error, success } = useSelector(
+    (state) => state.subTasks
   );
-  const { allTasks } = useSelector((state) => state.tasks);
-  const { loading, error, success } = useSelector((state) => state.subTasks);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+  });
 
   useEffect(() => {
     dispatch(getUserProjects());
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
     if (success) {
-      toast.success("Sub-Task created successfully!");
+      toast.success("Task Updated Successfully!");
       dispatch(resetSuccess());
     }
-  }, [error, success]);
+    dispatch(getSubtaskDetail(id));
+  }, [dispatch, success, error]);
+
+  useEffect(() => {
+    if (subtaskDetail) {
+      setFormData({
+        title: subtaskDetail?.title || "",
+        description: subtaskDetail?.description || "",
+        dueDate: subtaskDetail?.dueDate
+          ? new Date(subtaskDetail?.dueDate).toISOString().split("T")[0]
+          : "",
+      });
+    }
+  }, [subtaskDetail]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
+    const updatedFormData = new FormData();
 
-    formData.append("title", e.target.title.value);
-    formData.append("description", e.target.description.value);
-    formData.append("taskId", e.target.taskId.value);
-    formData.append("assignedTo", e.target.assignedTo.value);
-    formData.append("dueDate", e.target.dueDate.value);
+    updatedFormData.append("title", formData.title);
+    updatedFormData.append("description", formData.description);
+    updatedFormData.append("dueDate", formData.dueDate);
 
-    dispatch(createSubTask(formData));
-  };
-
-  const handleProjectChange = (e) => {
-    const projectId = e.target.value;
-    if (projectId) {
-      dispatch(projectTasks(projectId));
-    }
+    dispatch(updateSubtask({ id: id, formData: updatedFormData }));
   };
 
   return (
     <>
-      {projectLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <section className="flex min-h-screen">
@@ -62,7 +81,7 @@ const Create_Subtask = () => {
             <div className="p-4 w-full flex flex-col items-center">
               <h1 className=" mb-4 relative w-fit font-bold text-2xl text-slate-500 pb-1">
                 <span className="absolute rounded bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></span>
-                Create Sub-Task
+                Edit Sub-Task
               </h1>
               <hr className="mt-2" />
               <form
@@ -71,14 +90,16 @@ const Create_Subtask = () => {
               >
                 <div>
                   <label className="text-slate-400" htmlFor="title">
-                    Sub-Task Title <span className="text-red-600">*</span>
+                    Task Title <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="title"
                     name="title"
                     className="w-full p-2 mt-1 rounded bg-slate-200"
                     type="text"
-                    placeholder="Enter Sub-Task Title"
+                    placeholder="Enter Task Title"
+                    value={formData.title}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -90,49 +111,12 @@ const Create_Subtask = () => {
                     className="w-full text-slate-500 p-2 mt-1 rounded bg-slate-200"
                     name="description"
                     id="description"
-                    placeholder="Enter Sub-Task Description"
+                    placeholder="Enter Task Description"
                     rows="10"
+                    value={formData.description}
+                    onChange={handleChange}
                     required
                   ></textarea>
-                </div>
-                <div>
-                  <label className="text-slate-400" htmlFor="projectId">
-                    Select Project<span className="text-red-600">*</span>
-                  </label>
-                  <select
-                    className="w-full p-2 mt-1 rounded bg-slate-200"
-                    name="projectId"
-                    id="projectId"
-                    onChange={handleProjectChange}
-                    required
-                  >
-                    <option value="">Select Project</option>
-                    {userProjects &&
-                      userProjects.map((userProject) => (
-                        <option key={userProject._id} value={userProject?._id}>
-                          {userProject.projectName}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-slate-400" htmlFor="taskId">
-                    Select Task<span className="text-red-600">*</span>
-                  </label>
-                  <select
-                    className="w-full p-2 mt-1 rounded bg-slate-200"
-                    name="taskId"
-                    id="taskId"
-                    required
-                  >
-                    <option value="">Select Task</option>
-                    {allTasks &&
-                      allTasks.map((task) => (
-                        <option key={task._id} value={task?._id}>
-                          {task.title}
-                        </option>
-                      ))}
-                  </select>
                 </div>
 
                 <div>
@@ -144,19 +128,21 @@ const Create_Subtask = () => {
                     id="dueDate"
                     name="dueDate"
                     className="w-full p-2 mt-1 rounded bg-slate-200"
+                    value={formData.dueDate}
+                    onChange={handleChange}
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="bg-purple-600 rounded p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
+                  className="bg-purple-600 flex justify-center items-center rounded p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
                 >
                   {loading ? (
                     <>
                       <div role="status">
                         <svg
                           aria-hidden="true"
-                          class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                          className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                           viewBox="0 0 100 101"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -170,11 +156,11 @@ const Create_Subtask = () => {
                             fill="currentFill"
                           />
                         </svg>
-                        <span class="sr-only">Loading...</span>
+                        <span className="sr-only">Loading...</span>
                       </div>
                     </>
                   ) : (
-                    "Create Sub-Task"
+                    "Update Task"
                   )}
                 </button>
               </form>
@@ -186,4 +172,4 @@ const Create_Subtask = () => {
   );
 };
 
-export default Create_Subtask;
+export default Edit_Subtask;

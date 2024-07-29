@@ -107,16 +107,13 @@ export const updateProject = createAsyncThunk(
         },
         withCredentials: true,
       };
-      for (let [key, value] of updatedFormData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
 
       const response = await axios.put(
         `${serverUrl}/api/project/updateproject/${id}`,
         updatedFormData,
         config
       );
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       const message =
@@ -240,8 +237,8 @@ const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    clearMessage(state) {
-      state.message = null;
+    clearSuccess(state) {
+      state.success = null;
     },
   },
   extraReducers: (builder) => {
@@ -253,7 +250,7 @@ const projectSlice = createSlice({
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = action.payload.message;
+        state.success = action.payload.success;
       })
       .addCase(createProject.rejected, (state, action) => {
         state.loading = false;
@@ -292,7 +289,7 @@ const projectSlice = createSlice({
       })
       .addCase(updateProject.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = action.payload.message;
+        state.success = action.payload.success;
       })
       .addCase(updateProject.rejected, (state, action) => {
         state.loading = false;
@@ -353,6 +350,6 @@ const projectSlice = createSlice({
   },
 });
 
-export const { clearMessage } = projectSlice.actions;
+export const { clearSuccess } = projectSlice.actions;
 
 export default projectSlice.reducer;
