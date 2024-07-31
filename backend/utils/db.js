@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./config/config.env" });
-const uri = process.env.MONGODB_COMPASS;
+const uri = process.env.MONGODB_ATLAS;
 
 const connectDB = async () => {
   try {
