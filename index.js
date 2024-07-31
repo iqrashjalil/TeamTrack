@@ -19,7 +19,7 @@ connectDB();
 const Port = process.env.PORT || 4000;
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://teamtrack.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
