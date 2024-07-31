@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { loadUser } from "./store/slices/UserSlice";
 import Loader from "./components/loader/Loader";
 import { toast } from "react-toastify";
 
-const Protected_Route = ({ Component, role }) => {
+// eslint-disable-next-line react/prop-types
+const Protected_Route = ({ Component, roles }) => {
   const dispatch = useDispatch();
 
   const isAuthenticatedFromStorage = JSON.parse(
@@ -28,11 +29,12 @@ const Protected_Route = ({ Component, role }) => {
       isAuthenticatedFromStorage !== null &&
       isAuthenticatedFromStorage !== false &&
       user &&
-      role !== user.role
+      // eslint-disable-next-line react/prop-types
+      !roles.includes(user.role)
     ) {
       toast.error("You are not authorized to access this page!");
     }
-  }, [isAuthenticatedFromStorage, user, role]);
+  }, [isAuthenticatedFromStorage, user, roles]);
 
   if (!user) {
     return <Loader />;
@@ -45,9 +47,8 @@ const Protected_Route = ({ Component, role }) => {
     return <Navigate to="/login" />;
   }
 
-  if (role === "project_manager" && user.role === "project_manager") {
-    return <Component />;
-  } else if (role === "admin" && user.role === "admin") {
+  // eslint-disable-next-line react/prop-types
+  if (roles.includes(user.role)) {
     return <Component />;
   } else {
     return <Navigate to="/" />;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import logo from "../../images/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,11 +35,11 @@ const Register = () => {
 
   return (
     <>
-      <section className="p-2 flex justify-center items-center h-screen">
-        <div className="bg-slate-100 w-4/5 md:w-1/2 lg:w-1/4 px-2 rounded">
-          <div className="flex justify-center items-center flex-col">
+      <section className="flex items-center justify-center h-screen p-2">
+        <div className="w-4/5 px-2 rounded bg-slate-100 md:w-1/2 lg:w-1/4">
+          <div className="flex flex-col items-center justify-center">
             <img className="w-20" src={logo} alt="Logo" />
-            <h1 className="font-semibold text-xl md:font-bold md:text-2xl lg:text-2xl text-purple-500 flex justify-center pt-4">
+            <h1 className="flex justify-center pt-4 text-xl font-semibold text-purple-500 md:font-bold md:text-2xl lg:text-2xl">
               Register With TeamTrack!
             </h1>
           </div>
@@ -88,17 +88,17 @@ const Register = () => {
                 required
               />
             </div>
-            <div className="flex justify-center flex-col m-2">
+            <div className="flex flex-col justify-center m-2">
               <button
                 type="submit"
-                className="bg-purple-500 w-full p-1 h-10 rounded text-white font-semibold hover:bg-purple-600 transition duration-150"
+                className="w-full h-10 p-1 font-semibold text-white transition duration-150 bg-purple-500 rounded hover:bg-purple-600"
               >
                 {loading ? (
                   <>
                     <div role="status">
                       <svg
                         aria-hidden="true"
-                        class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                        className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ const Register = () => {
                           fill="currentFill"
                         />
                       </svg>
-                      <span class="sr-only">Loading...</span>
+                      <span className="sr-only">Loading...</span>
                     </div>
                   </>
                 ) : (
@@ -121,7 +121,7 @@ const Register = () => {
               </button>
               <p className="text-gray-400">
                 Already Have An Account?{" "}
-                <NavLink to="/login" className="text-purple-500 font-semibold">
+                <NavLink to="/login" className="font-semibold text-purple-500">
                   Login
                 </NavLink>
               </p>

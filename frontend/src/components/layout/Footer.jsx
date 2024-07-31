@@ -1,11 +1,11 @@
 import React from "react";
 import logo from "../../images/logo.png";
 import { NavLink } from "react-router-dom";
-import { FaLinkedin } from "react-icons/fa6";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa6";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-slate-100 p-2">
+      <footer className="p-2 bg-slate-100">
         <section className="md:flex md:justify-between">
           <section className="flex flex-col items-center my-4">
             <img className="w-60" src={logo} alt="" />
@@ -14,13 +14,13 @@ const Footer = () => {
             </p>
           </section>
           <hr />
-          <section className="my-4 flex flex-col ">
+          <section className="flex flex-col my-4 ">
             <div className="flex flex-col items-center mt-6 mb-6">
-              <h1 className="text-purple-600 text-2xl font-bold">
+              <h1 className="text-2xl font-bold text-purple-600">
                 Quick Links
               </h1>
             </div>
-            <div className="flex gap-20 justify-center mt-4">
+            <div className="flex justify-center gap-20 mt-4">
               <ul className="flex flex-col gap-4 text-slate-500">
                 <li>
                   <NavLink>Home</NavLink>
@@ -54,7 +54,7 @@ const Footer = () => {
             <ul className="flex justify-center my-4">
               <div className="flex flex-col gap-4">
                 <div className="flex justify-center">
-                  <h1 className="text-2xl text-purple-600 font-bold">
+                  <h1 className="text-2xl font-bold text-purple-600">
                     Contact Us
                   </h1>
                 </div>
@@ -86,26 +86,47 @@ const Footer = () => {
             </ul>
             <hr />
             <div className="flex justify-center my-4">
-              <h1 className="text-purple-600 font-bold">Get In Touch</h1>
+              <h1 className="font-bold text-purple-600">Get In Touch</h1>
             </div>
             <ul className="flex justify-center gap-4">
               <li className="flex items-center gap-2">
                 <FaLinkedin className="text-blue-600" />
-                <NavLink className="text-blue-600">LinkedIn</NavLink>
+                <a
+                  href="https://www.linkedin.com/in/iqrashjalil/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600"
+                >
+                  LinkedIn
+                </a>
               </li>
               <li className="flex items-center gap-2">
-                <FaLinkedin className="text-red-600" />
-                <NavLink className="text-red-600">Instagram</NavLink>
+                <FaInstagram className="text-red-600" />
+                <a
+                  href="https://www.instagram.com/iqrashjalil/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-red-600"
+                >
+                  Instagram
+                </a>
               </li>
               <li className="flex items-center gap-2">
-                <FaLinkedin className="text-blue-600" />
-                <NavLink className="text-blue-600">Facebook</NavLink>
+                <FaFacebook className="text-blue-600" />
+                <a
+                  href="https://web.facebook.com/igiqrash1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600"
+                >
+                  Facebook
+                </a>
               </li>
             </ul>
           </section>
         </section>
         <hr className="mt-4" />
-        <p className="flex justify-center text-slate-400 text-sm">
+        <p className="flex justify-center text-sm text-slate-400">
           <span>All &copy; Rights Reserved by Iqrash Jalil</span>
         </p>
       </footer>

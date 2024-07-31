@@ -1,4 +1,4 @@
-import react, { useEffect } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/auth/Register.jsx";
@@ -29,7 +29,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadUser());
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <Router>
@@ -40,30 +40,83 @@ function App() {
             path="/allprojects"
             element={
               <Protected_Route
-                role={"project_manager"}
+                roles={["admin", "project_manager"]}
                 Component={All_Projects}
               />
             }
           />
+
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/createproject" element={<Create_Project />} />
+          <Route
+            path="/createproject"
+            element={
+              <Protected_Route roles={["admin"]} Component={Create_Project} />
+            }
+          />
+
           <Route path="/projectdetails/:id" element={<Project_Details />} />
-          <Route path="/editproject/:id" element={<Edit_Project />} />
-          <Route path="/allusers" element={<All_Users />} />
+          <Route
+            path="/editproject/:id"
+            element={
+              <Protected_Route
+                roles={["admin", "project_manager"]}
+                Component={Edit_Project}
+              />
+            }
+          />
+
+          <Route
+            path="/allusers"
+            element={
+              <Protected_Route roles={["admin"]} Component={All_Users} />
+            }
+          />
+
           <Route path="/alltasks" element={<Select_Project />} />
           <Route path="/task/:id" element={<Project_Tasks />} />
-          <Route path="/createtask" element={<Create_Task />} />
-          <Route path="/createsubtask" element={<Create_Subtask />} />
+          <Route
+            path="/createtask"
+            element={
+              <Protected_Route
+                roles={["admin", "project_manager"]}
+                Component={Create_Task}
+              />
+            }
+          />
+          <Route
+            path="/createsubtask"
+            element={
+              <Protected_Route
+                roles={["admin", "project_manager"]}
+                Component={Create_Subtask}
+              />
+            }
+          />
+
           <Route path="/userdetails/:id" element={<User_Details />} />
+
           <Route path="/profiledetails" element={<Profile_Details />} />
+
           <Route path="/taskdetail/:id" element={<Task_Details />} />
-          <Route path="/edittask/:id" element={<Edit_Task />} />
+          <Route
+            path="/edittask/:id"
+            element={
+              <Protected_Route
+                role={["admin", "project_manager"]}
+                Component={Edit_Task}
+              />
+            }
+          />
+
           <Route path="/subtask/:id" element={<Subtask_Detail />} />
           <Route
             path="/editsubtask/:id"
             element={
-              <Protected_Route role={"admin"} Component={Edit_Subtask} />
+              <Protected_Route
+                role={["admin", "project_manager"]}
+                Component={Edit_Subtask}
+              />
             }
           />
         </Routes>
