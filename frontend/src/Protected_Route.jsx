@@ -29,7 +29,6 @@ const Protected_Route = ({ Component, roles }) => {
       isAuthenticatedFromStorage !== null &&
       isAuthenticatedFromStorage !== false &&
       user &&
-      // eslint-disable-next-line react/prop-types
       !roles.includes(user.role)
     ) {
       toast.error("You are not authorized to access this page!");
@@ -47,7 +46,6 @@ const Protected_Route = ({ Component, roles }) => {
     return <Navigate to="/login" />;
   }
 
-  // eslint-disable-next-line react/prop-types
   if (roles.includes(user.role)) {
     return <Component />;
   } else {
