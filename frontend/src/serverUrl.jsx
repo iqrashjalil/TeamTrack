@@ -1,1 +1,1 @@
-export const serverUrl = "https://teamtrack.vercel.app";
+export const serverUrl = "http://localhost:3000";

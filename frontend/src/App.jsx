@@ -36,15 +36,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/allprojects"
-            element={
-              <Protected_Route
-                roles={["admin", "project_manager"]}
-                Component={All_Projects}
-              />
-            }
-          />
+          <Route path="/allprojects" element={<All_Projects />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -79,7 +71,7 @@ function App() {
             path="/createtask"
             element={
               <Protected_Route
-                roles={["admin", "project_manager"]}
+                roles={["project_manager"]}
                 Component={Create_Task}
               />
             }
@@ -88,7 +80,7 @@ function App() {
             path="/createsubtask"
             element={
               <Protected_Route
-                roles={["admin", "project_manager"]}
+                roles={["project_manager"]}
                 Component={Create_Subtask}
               />
             }
@@ -103,7 +95,7 @@ function App() {
             path="/edittask/:id"
             element={
               <Protected_Route
-                role={["admin", "project_manager"]}
+                role={["project_manager"]}
                 Component={Edit_Task}
               />
             }
@@ -114,7 +106,7 @@ function App() {
             path="/editsubtask/:id"
             element={
               <Protected_Route
-                role={["admin", "project_manager"]}
+                role={["project_manager"]}
                 Component={Edit_Subtask}
               />
             }

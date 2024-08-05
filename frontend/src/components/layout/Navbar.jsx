@@ -52,19 +52,22 @@ const Navbar = () => {
           <img className="w-8" src={logo} alt="Logo" />
         </div>
         <div className="flex justify-center gap-2">
-          <div
-            onClick={toggleDropdown}
-            className="flex items-center gap-2 cursor-pointer md:hidden"
-          >
-            <img
-              className="rounded-full w-7 h-7 drop-shadow"
-              src={user?.profilePicture}
-              alt="User"
-            />
-            <BiSolidDownArrow className="text-1xl text-slate-200" />
-          </div>
+          {user && (
+            <div
+              onClick={toggleDropdown}
+              className="flex items-center gap-2 cursor-pointer md:hidden"
+            >
+              <img
+                className="rounded-full w-7 h-7 drop-shadow"
+                src={user?.profilePicture}
+                alt="User"
+              />
+              <BiSolidDownArrow className="text-1xl text-slate-200" />
+            </div>
+          )}
+
           {isDropdownOpen && (
-            <div className="absolute z-50 rounded top-14 bg-slate-100 right-20 md:right-8">
+            <div className="absolute  z-50 rounded top-14 bg-slate-100 right-20 md:right-8">
               <ul>
                 <li
                   onClick={toggleDropdown}
@@ -84,13 +87,14 @@ const Navbar = () => {
                     Edit Profile
                   </NavLink>
                 </li>
+
                 <hr />
                 <li
                   onClick={handleLogout}
-                  className="flex items-center gap-2 p-2 m-1 rounded hover:text-purple-500 hover:bg-slate-100"
+                  className="flex items-center cursor-pointer gap-2 p-2 m-1 rounded hover:text-purple-500 hover:bg-slate-100"
                 >
                   <IoMdExit />
-                  <span className="text-slate-500">Logout</span>
+                  <span className="text-slate-500 cursor-pointer">Logout</span>
                 </li>
               </ul>
             </div>

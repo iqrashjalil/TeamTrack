@@ -29,7 +29,7 @@ const Protected_Route = ({ Component, roles }) => {
       isAuthenticatedFromStorage !== null &&
       isAuthenticatedFromStorage !== false &&
       user &&
-      !roles.includes(user.role)
+      !roles.includes(user.user?.role || user.role)
     ) {
       toast.error("You are not authorized to access this page!");
     }
@@ -46,7 +46,7 @@ const Protected_Route = ({ Component, roles }) => {
     return <Navigate to="/login" />;
   }
 
-  if (roles.includes(user.role)) {
+  if (roles.includes(user.user?.role || user.role)) {
     return <Component />;
   } else {
     return <Navigate to="/" />;

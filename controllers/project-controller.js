@@ -34,14 +34,27 @@ const createProject = catchAsyncError(async (req, res, next) => {
 
 const updateProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const updatedData = req.body;
-  console.log(updatedData);
+  const { projectName, description, projectManager } = req.body;
+  const manager = await User.findById(projectManager).populate(
+    "managedTeamMembers"
+  );
+
+  if (!manager) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Project Manager not found" });
+  }
   let project = await Project.findByIdAndUpdate(id);
   if (!project) {
     return next(new ErrorHandler("Project not found", 404));
   }
 
-  await project.updateOne(updatedData);
+  await project.updateOne({
+    projectName,
+    description,
+    projectManager,
+    members: manager.managedTeamMembers,
+  });
   res
     .status(200)
     .json({ success: true, message: "Project Updated Successfully" });

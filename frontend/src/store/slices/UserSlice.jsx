@@ -26,6 +26,10 @@ export const register = createAsyncThunk(
         registerData,
         config
       );
+      if (data.success) {
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("user", JSON.stringify(data));
+      }
       return data;
     } catch (error) {
       const message =
@@ -58,6 +62,7 @@ export const login = createAsyncThunk(
       );
       if (data.success) {
         localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("user", JSON.stringify(data));
       }
       return data;
     } catch (error) {
@@ -107,6 +112,7 @@ export const logout = createAsyncThunk("user/logout", async () => {
     );
     if (data.success) {
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("user");
     }
     return data;
   } catch (error) {

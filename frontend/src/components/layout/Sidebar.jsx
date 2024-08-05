@@ -15,13 +15,6 @@ const Sidebar = () => {
         <ul className="flex flex-col gap-4">
           <NavLink
             className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
-            to={"/createproject"}
-          >
-            <MdOutlineCreateNewFolder className="text-4xl " />
-            <span className="hidden  md:block">Create Project</span>
-          </NavLink>
-          <NavLink
-            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
             to={"/allprojects"}
           >
             <MdSpaceDashboard className="text-4xl" />
@@ -29,24 +22,10 @@ const Sidebar = () => {
           </NavLink>
           <NavLink
             className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
-            to={"/createtask"}
+            to={"/createproject"}
           >
-            <IoMdAdd className="text-4xl " />
-            <span className="hidden   md:block">Create Task</span>
-          </NavLink>
-          <NavLink
-            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
-            to={"/alltasks"}
-          >
-            <BsListTask className="text-4xl " />
-            <span className="hidden   md:block">All Tasks</span>
-          </NavLink>
-          <NavLink
-            className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
-            to={"/createsubtask"}
-          >
-            <IoMdAddCircle className="text-4xl" />
-            <span className="hidden  md:block">Create Sub Task</span>
+            <MdOutlineCreateNewFolder className="text-4xl " />
+            <span className="hidden  md:block">Create Project</span>
           </NavLink>
           <NavLink
             className={`flex  p-1 gap-2 items-center text-slate-400 [&.active]:text-purple-600 [&.active]:bg-slate-200 [&.active]:font-bold hover:bg-slate-200 transition duration-200`}
@@ -101,7 +80,8 @@ const Sidebar = () => {
           >
             <IoPersonSharp className="text-4xl" />
             <span className="hidden md:block ">Edit Profile</span>
-          </NavLink></ul>
+          </NavLink>
+        </ul>
       )}
 
       {user?.role === "team_member" && (

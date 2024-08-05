@@ -102,7 +102,7 @@ const Create_Project = () => {
               </div>
               <button
                 type="submit"
-                className="bg-purple-600 p-2 mt-6 w-full rounded text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
+                className="bg-purple-600 flex justify-center items-center h-10 p-2 mt-6 w-full rounded text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
               >
                 {loading ? (
                   <>

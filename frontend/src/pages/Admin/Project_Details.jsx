@@ -195,36 +195,41 @@ const Project_Details = () => {
                   </div>
                 </div>
               )}
-              <div className="p-2 flex flex-col">
-                <label className="text-slate-400" htmlFor="status">
-                  Update Status:
-                </label>
-                <div className="flex gap-[1%]">
-                  <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    className="bg-slate-200 w-full p-2 focus:outline-none border-2 cursor-pointer focus:border-purple-600 rounded"
-                    name="status"
-                    id="status"
-                  >
-                    <option value="Completed">Completed</option>
-                    <option value="InProgress">In Progress</option>
-                  </select>
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        updateProject({
-                          id: id,
-                          updatedFormData: { projectStatus: status },
-                        })
-                      )
-                    }
-                    className="bg-purple-600 w-40 font-semibold hover:bg-purple-700 transition-all duration-200 rounded text-white p-2 border-2 border-purple-600"
-                  >
-                    Update Status
-                  </button>
+              {user && user.role == "team_member" ? (
+                ""
+              ) : (
+                <div className="p-2 flex flex-col">
+                  <label className="text-slate-400" htmlFor="status">
+                    Update Status:
+                  </label>
+                  <div className="flex gap-[1%]">
+                    <select
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      className="bg-slate-200 w-full p-2 focus:outline-none border-2 cursor-pointer focus:border-purple-600 rounded"
+                      name="status"
+                      id="status"
+                    >
+                      <option value="Completed">Completed</option>
+                      <option value="InProgress">In Progress</option>
+                    </select>
+                    <button
+                      onClick={() =>
+                        dispatch(
+                          updateProject({
+                            id: id,
+                            updatedFormData: { projectStatus: status },
+                          })
+                        )
+                      }
+                      className="bg-purple-600 w-40 font-semibold hover:bg-purple-700 transition-all duration-200 rounded text-white p-2 border-2 border-purple-600"
+                    >
+                      Update Status
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+
               {projectDetails?.task.length > 0 && (
                 <div className="border rounded border-purple-200 mt-4 p-2">
                   <h1 className="font-bold text-lg text-slate-700">Tasks</h1>
