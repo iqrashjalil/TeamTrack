@@ -6,15 +6,22 @@ import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import Loader from "../../components/loader/Loader.jsx";
+import { toast } from "react-toastify";
+import { resetSuccess } from "../../store/slices/Task_Slice.jsx";
 
 const Select_Project = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projects, loading } = useSelector((state) => state.projects);
+  const { success } = useSelector((state) => state.tasks);
 
   useEffect(() => {
+    if (success) {
+      toast.success("Task Deleted Successfully");
+      dispatch(resetSuccess());
+    }
     dispatch(getAllProjects());
-  }, [dispatch]);
+  }, [dispatch, success]);
 
   const handleOnClick = (projectid) => {
     navigate(`/task/${projectid}`);

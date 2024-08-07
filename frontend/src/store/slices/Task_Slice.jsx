@@ -125,6 +125,32 @@ export const updateTask = createAsyncThunk(
   }
 );
 
+// Delete Task
+export const deleteTask = createAsyncThunk(
+  "task/deleteTask",
+  async (id, { rejectWithValue }) => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+
+      const { data } = await axios.delete(
+        `${serverUrl}/api/task/deletetask/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        "An unknown error occurred";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -184,6 +210,19 @@ const taskSlice = createSlice({
         state.success = action.payload.success;
       })
       .addCase(updateTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //* Update Task Cases
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

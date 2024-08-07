@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { projectTasks } from "../../store/slices/Task_Slice";
-import { NavLink, useParams } from "react-router-dom";
-import { FaArrowRight, FaEdit, FaEye } from "react-icons/fa";
+import { deleteTask, projectTasks } from "../../store/slices/Task_Slice";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 import { MdDelete, MdOutlineDoNotDisturb } from "react-icons/md";
 import Loader from "../../components/loader/Loader";
 
 const Project_Tasks = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { allTasks, loading } = useSelector((state) => state.tasks);
@@ -19,6 +20,11 @@ const Project_Tasks = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteTask(id));
+    navigate("/alltasks");
   };
 
   return (
@@ -91,7 +97,10 @@ const Project_Tasks = () => {
                                 View
                                 <FaEye />
                               </NavLink>
-                              <button className="flex items-center border-red-600 border text-red-600 rounded hover:bg-red-600 hover:text-white transition-all duration-200 p-1">
+                              <button
+                                onClick={(e) => handleDelete(task._id)}
+                                className="flex items-center border-red-600 border text-red-600 rounded hover:bg-red-600 hover:text-white transition-all duration-200 p-1"
+                              >
                                 Delete
                                 <MdDelete />
                               </button>

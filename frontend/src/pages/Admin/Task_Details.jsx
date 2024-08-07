@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteTask,
   getTaskDetail,
   resetSuccess,
   updateTask,
@@ -49,8 +50,12 @@ const Task_Details = () => {
       dispatch(resetSuccess());
     }
     dispatch(getTaskDetail(id));
-  }, [dispatch, error, success]);
+  }, [dispatch, error, id, success]);
 
+  const handleDelete = () => {
+    dispatch(deleteTask(id));
+    navigate("/alltasks");
+  };
   return (
     <>
       {loading ? (
@@ -232,7 +237,7 @@ const Task_Details = () => {
                               {taskDetail?.title}
                             </h3>
                             <button
-                              // onClick={(e) => handleDelete()}
+                              onClick={(e) => handleDelete()}
                               type="button"
                               className="text-white h-10 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                             >

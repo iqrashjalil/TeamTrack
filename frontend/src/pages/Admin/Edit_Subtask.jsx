@@ -135,7 +135,7 @@ const Edit_Subtask = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-purple-600 flex justify-center items-center rounded p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
+                  className="bg-purple-600 flex justify-center items-center h-10 rounded p-2 mt-6 w-full text-slate-100 font-semibold hover:bg-purple-700 transition duration-200"
                 >
                   {loading ? (
                     <>

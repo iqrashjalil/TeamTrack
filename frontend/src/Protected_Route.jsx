@@ -5,7 +5,6 @@ import { loadUser } from "./store/slices/UserSlice";
 import Loader from "./components/loader/Loader";
 import { toast } from "react-toastify";
 
-// eslint-disable-next-line react/prop-types
 const Protected_Route = ({ Component, roles }) => {
   const dispatch = useDispatch();
 
@@ -46,7 +45,10 @@ const Protected_Route = ({ Component, roles }) => {
     return <Navigate to="/login" />;
   }
 
-  if (roles.includes(user.user?.role || user.role)) {
+  // console.log(roles);
+  // console.log(user.user?.role || user.role);
+
+  if (roles && roles.includes(user.user?.role || user.role)) {
     return <Component />;
   } else {
     return <Navigate to="/" />;
