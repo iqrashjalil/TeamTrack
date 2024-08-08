@@ -34,7 +34,7 @@ const createProject = catchAsyncError(async (req, res, next) => {
 
 const updateProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const { projectName, description, projectManager } = req.body;
+  const { projectName, description, projectManager, projectStatus } = req.body;
 
   const manager = await User.findById(projectManager).populate(
     "managedTeamMembers"
@@ -51,6 +51,7 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     projectName,
     description,
     projectManager,
+    projectStatus,
     ...(manager?.managedTeamMembers && {
       members: manager.managedTeamMembers,
     }),
