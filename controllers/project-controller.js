@@ -48,7 +48,7 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     projectName,
     description,
     projectManager,
-    members: manager.managedTeamMembers,
+    members: manager?.managedTeamMembers || "",
   });
   res
     .status(200)
