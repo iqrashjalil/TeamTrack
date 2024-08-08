@@ -27,9 +27,6 @@ const Select_Project = () => {
     navigate(`/task/${projectid}`);
   };
 
-  const handleDelete = (projectid) => {
-    dispatch("");
-  };
   return (
     <>
       {loading ? (
@@ -95,13 +92,6 @@ const Select_Project = () => {
                           >
                             View
                             <FaEye />
-                          </button>
-                          <button
-                            onClick={(e) => handleDelete(project._id)}
-                            className="flex items-center border-red-600 border text-red-600 rounded hover:bg-red-600 hover:text-white transition-all duration-200 p-1"
-                          >
-                            Delete
-                            <MdDelete />
                           </button>
                         </div>
                       </td>

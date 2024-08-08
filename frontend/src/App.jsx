@@ -95,7 +95,7 @@ function App() {
             path="/edittask/:id"
             element={
               <Protected_Route
-                role={["project_manager"]}
+                roles={["admin", "project_manager"]}
                 Component={Edit_Task}
               />
             }
