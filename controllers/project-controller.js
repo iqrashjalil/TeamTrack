@@ -39,11 +39,6 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     "managedTeamMembers"
   );
 
-  if (!manager) {
-    return res
-      .status(404)
-      .json({ success: false, message: "Project Manager not found" });
-  }
   let project = await Project.findByIdAndUpdate(id);
   if (!project) {
     return next(new ErrorHandler("Project not found", 404));
