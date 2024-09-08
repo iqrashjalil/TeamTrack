@@ -63,9 +63,9 @@ const Footer = () => {
                     Email: {""}
                     <a
                       className="text-blue-600"
-                      href="mailto:iqrashjalil@example.com"
+                      href="mailto:iqrashjalil@gmail.com"
                     >
-                      iqrashjalil@example.com
+                      iqrashjalil@gmail.com
                     </a>
                   </h1>
                 </li>
